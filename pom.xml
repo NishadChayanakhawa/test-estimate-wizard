@@ -47,8 +47,8 @@
 				<version>${jacoco-maven-plugin.version}</version>
 				<configuration>
 					<excludes>
-						<exclude>**/IntelliDashApplication.class</exclude>
-						<exclude>**/intellidash/configurations/*.class</exclude>
+						<exclude>**/TestEstimateHubApplication.class</exclude>
+						<exclude>**/testestimatehub/configurations/*.class</exclude>
 					</excludes>
 					<skip>${skipCodeCoverageCheck}</skip>
 				</configuration>
