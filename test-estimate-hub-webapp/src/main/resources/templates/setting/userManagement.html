@@ -4,15 +4,14 @@
 <head th:insert="~{BasePage :: headSection(title=~{::title/text()},script=~{::script},style=~{::style},link=~{::link})}"
 	th:remove="tag">
 	<title>Home</title>
-	<link th:href="@{/datatable/css/datatables.min.css}" rel="stylesheet" />
-	<script th:src="@{/datatable/js/dataTables.bootstrap5.min.js}"></script>
-	<script th:src="@{/datatable/js/dataTables.min.js}"></script>
+	<link th:href="@{/datatable/css/datatables.min.css}" rel="stylesheet" />	
 	<script th:src="@{/application/js/common/apiHandling.js}"></script>
 	<script th:src="@{/application/js/common/messageHandling.js}"></script>
 	<script th:src="@{/jquery/js/jquery.tmpl.js}"></script>
 	<script th:src="@{/application/js/common/common.js}"></script>
 	<script th:src="@{/application/js/setting/userManagementProcessing.js}"></script>
-
+	<script th:src="@{/datatable/js/datatables.min.js}"></script>
+	<script th:src="@{/datatable/js/dataTables.bootstrap5.min.js}"></script>
 	<script>
 		$(document).ready(function () {
 			userManagementProcessing.init();
