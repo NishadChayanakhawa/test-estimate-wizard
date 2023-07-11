@@ -26,6 +26,7 @@ var userManagementProcessing = (function() {
 	var getUserList = function() {
 		//event.preventDefault();
 		$(xpaths["userListTableBody"]).html($(xpaths["userListPlaceholder"]).html());
+		$("#userManagementContent").block({ message: '<h5><i class="fa-solid fa-spinner fa-spin"></i> Just a moment...</h5>' });
 		apiHandling.processRequest("get", "/api/user", csrfToken, null)
 			.done(data => getUserList_success(data))
 			.catch(error => console.debug(error));
@@ -36,6 +37,7 @@ var userManagementProcessing = (function() {
 		$(xpaths["userListTableBody"]).html("");
 		$(xpaths["userListTemplate"]).tmpl(data).appendTo(xpaths["userListTableBody"]);
 		$("table#userListTable").DataTable();
+		$("#userManagementContent").unblock();
 	};
 
 	var updateEditUserModal = function(username) {
@@ -69,6 +71,8 @@ var userManagementProcessing = (function() {
 		if ($(xpaths["editUserForm"]).validate()) {
 			var editUserData = $(xpaths["editUserForm"]).serializeObject();
 			console.debug(editUserData);
+			$("#userManagementContent").block({ message: '<h5><i class="fa-solid fa-spinner fa-spin"></i> Just a moment...</h5>' });
+			$("#editUserModal").block({ message: '<h5><i class="fa-solid fa-spinner fa-spin"></i> Just a moment...</h5>' });
 			apiHandling.processRequest("put", "/api/user", csrfToken, editUserData)
 				.done(data => saveUpdatedUser_success(data))
 				.catch(error => console.debug(error));
@@ -81,6 +85,7 @@ var userManagementProcessing = (function() {
 		$(xpaths["editUserModal"]).modal("hide");
 		$(xpaths["editUserForm"])[0].reset();
 		messageHandling.displayToastMessage(message, "success");
+		$("#editUserModal").unblock();
 		getUserList();
 	};
 
@@ -90,6 +95,9 @@ var userManagementProcessing = (function() {
 		if ($(xpaths["addUserForm"]).validate()) {
 			var newUserData = $(xpaths["addUserForm"]).serializeObject();
 			console.debug(newUserData);
+			$("#userManagementContent").block({ message: '<h5><i class="fa-solid fa-spinner fa-spin"></i> Just a moment...</h5>' });
+			$("#addUserModal").block({ message: '<h5><i class="fa-solid fa-spinner fa-spin"></i> Just a moment...</h5>' });
+			
 			apiHandling.processRequest("put", "/api/user", csrfToken, newUserData)
 				.done(data => saveNewUser_success(data))
 				.catch(error => console.debug(error));
@@ -102,6 +110,7 @@ var userManagementProcessing = (function() {
 		$(xpaths["addUserModal"]).modal("hide");
 		$(xpaths["addUserForm"])[0].reset();
 		messageHandling.displayToastMessage(message, "success");
+		$("#addUserModal").unblock();
 		getUserList();
 	};
 
