@@ -84,7 +84,7 @@ var userManagementProcessing = (function() {
 		var message = "User " + user.username + " updated.";
 		$(xpaths["editUserModal"]).modal("hide");
 		$(xpaths["editUserForm"])[0].reset();
-		messageHandling.displayToastMessage(message, "success");
+		toastr.success(message);
 		$("#editUserModal").unblock();
 		getUserList();
 	};
@@ -97,7 +97,7 @@ var userManagementProcessing = (function() {
 			console.debug(newUserData);
 			$("#userManagementContent").block({ message: '<h5><i class="fa-solid fa-spinner fa-spin"></i> Just a moment...</h5>' });
 			$("#addUserModal").block({ message: '<h5><i class="fa-solid fa-spinner fa-spin"></i> Just a moment...</h5>' });
-			
+
 			apiHandling.processRequest("put", "/api/user", csrfToken, newUserData)
 				.done(data => saveNewUser_success(data))
 				.catch(error => console.debug(error));
@@ -109,7 +109,7 @@ var userManagementProcessing = (function() {
 		var message = "User " + user.username + " added.";
 		$(xpaths["addUserModal"]).modal("hide");
 		$(xpaths["addUserForm"])[0].reset();
-		messageHandling.displayToastMessage(message, "success");
+		toastr.success(message);
 		$("#addUserModal").unblock();
 		getUserList();
 	};
@@ -137,7 +137,7 @@ var userManagementProcessing = (function() {
 		$(xpaths["deleteUserConfirmationModal"]).modal("hide");
 		$(xpaths["delete_username"]).val();
 		$(xpaths["usernameDisplay"]).html();
-		messageHandling.displayToastMessage(message, "success");
+		toastr.success(message);
 		getUserList();
 	};
 
@@ -150,6 +150,24 @@ var userManagementProcessing = (function() {
 		$(xpaths["saveNewUser"]).click(saveNewUser);
 		$(xpaths["confirmDeleteUser"]).click(confirmDeleteUser);
 		csrfToken = $("input#csrf").val();
+
+		toastr.options = {
+			"closeButton": true,
+			"debug": false,
+			"newestOnTop": true,
+			"progressBar": true,
+			"positionClass": "toast-top-right",
+			"preventDuplicates": false,
+			"onclick": null,
+			"showDuration": "300",
+			"hideDuration": "1000",
+			"timeOut": "5000",
+			"extendedTimeOut": "1000",
+			"showEasing": "swing",
+			"hideEasing": "linear",
+			"showMethod": "fadeIn",
+			"hideMethod": "fadeOut"
+		}
 	};
 
 	return {
