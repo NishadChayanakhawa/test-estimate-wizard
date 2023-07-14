@@ -17,21 +17,10 @@ public enum Complexity {
 		this.code=value;
 		this.displayValue=displayValue;
 	}
-	
 	public String getCode() {
 		return code;
-	}
-	void setCode(String code) {
-		this.code = code;
-	}
-	
-	
+	}	
 	public String getDisplayValue() {
 		return displayValue;
-	}
-	void setDisplayValue(String displayValue) {
-		this.displayValue = displayValue;
-	}
-	
-	
+	}	
 }
