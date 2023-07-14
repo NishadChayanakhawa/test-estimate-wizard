@@ -3,6 +3,8 @@ package io.github.nishadchayanakhawa.testestimatehub.tests;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
@@ -21,8 +23,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.nishadchayanakhawa.testestimatehub.TestEstimateHubApplication;
-import io.github.nishadchayanakhawa.testestimatehub.model.Complexity;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.ApplicationConfigurationDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.Complexity;
 
 @TestMethodOrder(OrderAnnotation.class)
 @SpringBootTest(classes = TestEstimateHubApplication.class,webEnvironment=SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -59,6 +61,7 @@ class ApplicationConfigurationApiTests {
     void addApplicationConfig_test() throws Exception {
 		ApplicationConfigurationDTO applicationConfigurationDTO=new ApplicationConfigurationDTO
 				("App1","Module1","SubModule1",3.4,Complexity.MEDIUM);
+		logger.info(objectMapper.writeValueAsString(applicationConfigurationDTO));
 		mvc
 		.perform(
 				put(url + "/api/config/application")
@@ -88,6 +91,34 @@ class ApplicationConfigurationApiTests {
 		mvc
 		.perform(
 				get(url + "/api/config/application")
+				.with(user("admin").password("admin").roles("ADMIN")))
+		.andExpect(status().isOk()).andReturn();
+	}
+	
+	@Test
+    @Order(4)
+    void getApplicationConfig_test() throws Exception {
+		ApplicationConfigurationDTO applicationConfigurationDTO=new ApplicationConfigurationDTO
+				("App1","Module1","SubModule1",0,null);
+		mvc
+		.perform(
+				post(url + "/api/config/application")
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.content(objectMapper.writeValueAsString(applicationConfigurationDTO))
+				.with(user("admin").password("admin").roles("ADMIN")))
+		.andExpect(status().isOk()).andReturn();
+	}
+	
+	@Test
+    @Order(5)
+    void deleteApplicationConfig_test() throws Exception {
+		ApplicationConfigurationDTO applicationConfigurationDTO=new ApplicationConfigurationDTO
+				("App1","Module1","SubModule1",0,null);
+		mvc
+		.perform(
+				delete(url + "/api/config/application")
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.content(objectMapper.writeValueAsString(applicationConfigurationDTO))
 				.with(user("admin").password("admin").roles("ADMIN")))
 		.andExpect(status().isOk()).andReturn();
 	}

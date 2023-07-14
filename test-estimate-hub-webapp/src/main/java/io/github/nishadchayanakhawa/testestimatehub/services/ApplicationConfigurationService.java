@@ -32,4 +32,16 @@ public class ApplicationConfigurationService {
 				modelMapper.map(applicationConfigurationDTO, ApplicationConfiguration.class).getApplicationConfigurationId();
 		return applicationConfigurationRepository.existsById(applicationConfigurationId);
 	}
+	
+	public ApplicationConfigurationDTO get(ApplicationConfigurationDTO applicationConfigurationDTO) {
+		ApplicationConfigurationID applicationConfigurationId=
+				modelMapper.map(applicationConfigurationDTO, ApplicationConfiguration.class).getApplicationConfigurationId();
+		return modelMapper.map(applicationConfigurationRepository.findById(applicationConfigurationId).orElseThrow(), ApplicationConfigurationDTO.class);
+	}
+	
+	public void delete(ApplicationConfigurationDTO applicationConfigurationDTO) {
+		ApplicationConfigurationID applicationConfigurationId=
+				modelMapper.map(applicationConfigurationDTO, ApplicationConfiguration.class).getApplicationConfigurationId();
+		applicationConfigurationRepository.deleteById(applicationConfigurationId);
+	}
 }

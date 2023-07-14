@@ -56,7 +56,7 @@ class TestEstimateHubApplicationControllersTests {
 	
 	@ParameterizedTest
     @Order(2)
-	@ValueSource(strings = {"/home", "/setting/usermanagement"})
+	@ValueSource(strings = {"/home", "/configuration/usermanagement","/configuration/application"})
     void homePage_test(String path) throws Exception {
 		User user=userService.findByUsername("admin");
     			mvc

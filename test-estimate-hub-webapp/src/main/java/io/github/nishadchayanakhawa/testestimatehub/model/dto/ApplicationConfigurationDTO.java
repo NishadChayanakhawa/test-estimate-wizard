@@ -1,10 +1,24 @@
 package io.github.nishadchayanakhawa.testestimatehub.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import io.github.nishadchayanakhawa.testestimatehub.model.Complexity;
 
+@JsonPropertyOrder({
+	"applicationName",
+	"moduleName",
+	"subModuleName",
+	"baseTestCaseCountFactor",
+	"complexity",
+	"complexityDisplayValue"
+})
 public class ApplicationConfigurationDTO {
+	@JsonProperty("applicationName")
 	private String applicationConfigurationIdApplicationName;
+	@JsonProperty("moduleName")
 	private String applicationConfigurationIdModuleName;
+	@JsonProperty("subModuleName")
 	private String applicationConfigurationIdSubModuleName;
 	private double baseTestCaseCountFactor;
 	private Complexity complexity;

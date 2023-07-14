@@ -15,8 +15,13 @@ public class TestEstimateHubApplicationControllers {
 		return "home";
 	}
 	
-	@GetMapping("/setting/usermanagement")
+	@GetMapping("/configuration/usermanagement")
 	public String getUserManagementPage() {
-		return "setting/userManagement";
+		return "configuration/userManagement";
+	}
+	
+	@GetMapping("/configuration/application")
+	public String getApplicationConfigurationPage() {
+		return "configuration/application";
 	}
 }
