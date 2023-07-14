@@ -25,7 +25,7 @@
 			<td>${subModuleName}</td>
 			<td>${baseTestCaseCountFactor}</td>
 			<td>
-				${complexity}
+				${complexityDisplayValue}
 			</td>
 			<td>
 				<button class="border-0 bg-transparent" id="editApplicationConfiguration_${applicationName}_${moduleName}_${subModuleName}">
@@ -106,23 +106,23 @@
 						</div>
 						<label>Select Application Complexity</label>
 						<div class="btn-group" role="group" aria-label="Basic radio toggle button group">							
-							<input type="radio" class="btn-check" name="complexity" id="complexity_VERY_LOW" value="VERY_LOW"
+							<input type="radio" class="btn-check" name="complexityCode" id="complexity_VERY_LOW" value="VERY_LOW"
 								autocomplete="off">
 							<label class="btn btn-outline-primary" for="complexity_VERY_LOW">Very Low</label>
 							
-							<input type="radio" class="btn-check" name="complexity" id="complexity_LOW" value="LOW"
+							<input type="radio" class="btn-check" name="complexityCode" id="complexity_LOW" value="LOW"
 								autocomplete="off">
 							<label class="btn btn-outline-primary" for="complexity_LOW">Low</label>
 							
-							<input type="radio" class="btn-check" name="complexity" id="complexity_MEDIUM" value="MEDIUM"
+							<input type="radio" class="btn-check" name="complexityCode" id="complexity_MEDIUM" value="MEDIUM"
 								autocomplete="off" checked>
 							<label class="btn btn-outline-primary" for="complexity_MEDIUM">Medium</label>
 
-							<input type="radio" class="btn-check" name="complexity" id="complexity_HIGH" value="HIGH"
+							<input type="radio" class="btn-check" name="complexityCode" id="complexity_HIGH" value="HIGH"
 								autocomplete="off">
 							<label class="btn btn-outline-primary" for="complexity_HIGH">High</label>
 
-							<input type="radio" class="btn-check" name="complexity" id="complexity_VERY_HIGH" value="VERY_HIGH"
+							<input type="radio" class="btn-check" name="complexityCode" id="complexity_VERY_HIGH" value="VERY_HIGH"
 								autocomplete="off">
 							<label class="btn btn-outline-primary" for="complexity_VERY_HIGH">Very High</label>
 						</div>

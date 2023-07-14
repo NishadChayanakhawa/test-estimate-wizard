@@ -45,6 +45,7 @@ var applicationConfigurationProcessing = (function() {
 		if($(xpaths["saveApplicationConfigurationForm"]).validate()) {
 			$(xpaths["applicationConfigurationContent"]).block({ message: '<h5><i class="fa-solid fa-spinner fa-spin"></i> Just a moment...</h5>' });
 			var saveApplicationConfigurationData=$(xpaths["saveApplicationConfigurationForm"]).serializeObject();
+			console.debug(saveApplicationConfigurationData);
 			apiHandling.processRequest("put", "/api/config/application", csrfToken, saveApplicationConfigurationData)
 				.done(data => saveApplicationConfiguration_success(data))
 				.catch(error => console.debug(error));
@@ -79,7 +80,7 @@ var applicationConfigurationProcessing = (function() {
 		$("input#subModule").attr("disabled",true);
 		$("input#subModule").attr("readOnly",true);
 		$("input#baseTestCaseCountFactor").val(applicationConfigurationRecord.baseTestCaseCountFactor);
-		$("input#complexity_" + applicationConfigurationRecord.complexity).attr("checked",true);
+		$("input#complexity_" + applicationConfigurationRecord.complexityCode).attr("checked",true);
 		$(xpaths["addOrEditApplicationConfigurationRecordModal"]).modal("show");
 	};
 	

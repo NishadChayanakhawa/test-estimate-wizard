@@ -24,7 +24,6 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.nishadchayanakhawa.testestimatehub.TestEstimateHubApplication;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.ApplicationConfigurationDTO;
-import io.github.nishadchayanakhawa.testestimatehub.model.Complexity;
 
 @TestMethodOrder(OrderAnnotation.class)
 @SpringBootTest(classes = TestEstimateHubApplication.class,webEnvironment=SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -60,7 +59,7 @@ class ApplicationConfigurationApiTests {
     @Order(1)
     void addApplicationConfig_test() throws Exception {
 		ApplicationConfigurationDTO applicationConfigurationDTO=new ApplicationConfigurationDTO
-				("App1","Module1","SubModule1",3.4,Complexity.MEDIUM);
+				("App1","Module1","SubModule1",3.4,"MEDIUM");
 		logger.info(objectMapper.writeValueAsString(applicationConfigurationDTO));
 		mvc
 		.perform(
@@ -75,7 +74,7 @@ class ApplicationConfigurationApiTests {
     @Order(2)
     void updateApplicationConfig_test() throws Exception {
 		ApplicationConfigurationDTO applicationConfigurationDTO=new ApplicationConfigurationDTO
-				("App1","Module1","SubModule1",3.4,Complexity.HIGH);
+				("App1","Module1","SubModule1",3.4,"HIGH");
 		mvc
 		.perform(
 				put(url + "/api/config/application")

@@ -10,7 +10,7 @@ import io.github.nishadchayanakhawa.testestimatehub.model.ApplicationConfigurati
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.ApplicationConfigurationDTO;
 
 @Service
-public class ApplicationConfigurationService {	
+public class ApplicationConfigurationService {		
 	@Autowired
 	private ApplicationConfigurationRepository applicationConfigurationRepository;
 	
