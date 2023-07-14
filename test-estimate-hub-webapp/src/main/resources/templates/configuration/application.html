@@ -63,16 +63,18 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="exampleModalLabel">Delete User</h1>
+					<h1 class="modal-title fs-5" id="exampleModalLabel">Delete Application Configuration Record</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<form id="deleteUserForm">
-						<input type="hidden" id="delete_username" name="username" />
-						Confirm delete operation for user <span id="usernameDisplay"></span>
+					<form id="deleteApplicationConfigurationDeleteForm">
+						<input type="hidden" class="form-control" id="deleteAction_application" name="applicationName" required />
+						<input type="hidden" class="form-control" id="deleteAction_module" name="moduleName" required />
+						<input type="hidden" class="form-control" id="deleteAction_subModule" name="subModuleName" required />
+						Confirm delete operation <span id="usernameDisplay"></span>
 						<hr>
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button id="confirmDeleteUser" type="submit" class="btn btn-danger">Confirm Delete</button>
+						<button id="confirmDeleteApplicationConfigurationRecord" type="submit" class="btn btn-danger">Confirm Delete</button>
 					</form>
 				</div>
 			</div>
@@ -101,7 +103,7 @@
 							<label for="applicationName">Sub-Module</label>
 						</div>
 						<div class="form-floating mb-3">
-							<input type="text" class="form-control" id="baseTestCaseCountFactor" name="baseTestCaseCountFactor" required />
+							<input type="text" class="form-control constraint-numeric" id="baseTestCaseCountFactor" name="baseTestCaseCountFactor" required />
 							<label for="applicationName">Base Test Case Count</label>
 						</div>
 						<label>Select Application Complexity</label>

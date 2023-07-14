@@ -9,8 +9,47 @@ var applicationConfigurationProcessing = (function() {
 		"applicationConfigurationRecordTable" : "table#applicationConfigurationRecordTable",
 		"applicationConfigurationRecordTableBody" : "tbody#applicationConfigurationRecordTableBody",
 		"applicationConfigurationRecordListTemplate" : "#applicationConfigurationRecordListTemplate",
-		"editApplicationConfigurationButtons" : "button[id^='editApplicationConfiguration_']"
+		"editApplicationConfigurationButtons" : "button[id^='editApplicationConfiguration_']",
+		"deleteApplicationConfigurationButtons" : "button[id^='deleteApplicationConfiguration_']",
+		"deleteUserConfirmationModal" : "div#deleteUserConfirmationModal",
+		"confirmDeleteApplicationConfigurationRecordButton" : "button#confirmDeleteApplicationConfigurationRecord",
+		"deleteApplicationConfigurationDeleteForm" : "form#deleteApplicationConfigurationDeleteForm"
 	};
+
+	//DELETE Process
+	
+	var showDeleteModal=function(event) {
+		event.preventDefault();
+		var deleteButtonId=$(this).attr("id");
+		var applicationConfigurationId=getApplicationConfigurationId(deleteButtonId);
+		apiHandling.processRequest("post", "/api/config/application", csrfToken, applicationConfigurationId)
+			.done(data => showDeleteModal_success(data))
+			.catch(error => console.debug(error));
+	};
+	
+	var showDeleteModal_success=function(applicationConfigurationRecord) {
+		$("input#deleteAction_application").val(applicationConfigurationRecord.applicationName);
+		$("input#deleteAction_module").val(applicationConfigurationRecord.moduleName);
+		$("input#deleteAction_subModule").val(applicationConfigurationRecord.subModuleName);
+		$(xpaths["deleteUserConfirmationModal"]).modal("show");
+	};
+	
+	var deleteApplicationConfigurationRecord=function(event) {
+		event.preventDefault();
+		$(xpaths["deleteUserConfirmationModal"]).modal("hide");
+		$(xpaths["applicationConfigurationContent"]).block({ message: '<h5><i class="fa-solid fa-spinner fa-spin"></i> Deleting record...</h5>' });
+		var applicationConfigurationId=$(xpaths["deleteApplicationConfigurationDeleteForm"]).serializeObject();
+		apiHandling.processRequest("delete", "/api/config/application", csrfToken, applicationConfigurationId)
+			.done(data => deleteApplicationConfigurationRecord_success(data))
+			.catch(error => console.debug(error));
+	}
+	
+	var deleteApplicationConfigurationRecord_success=function(data) {
+		getApplicationConfigurationList();
+		$(xpaths["applicationConfigurationContent"]).unblock();
+	};
+	
+	//Load List
 	
 	var getApplicationConfigurationList = function() {
 		//event.preventDefault();
@@ -40,10 +79,13 @@ var applicationConfigurationProcessing = (function() {
 		$(xpaths["applicationConfigurationContent"]).unblock();
 	};
 	
+	//Add/Edit
+	
 	var saveApplicationConfiguration=function(event) {
 		event.preventDefault();
 		if($(xpaths["saveApplicationConfigurationForm"]).validate()) {
-			$(xpaths["applicationConfigurationContent"]).block({ message: '<h5><i class="fa-solid fa-spinner fa-spin"></i> Just a moment...</h5>' });
+			$(xpaths["addOrEditApplicationConfigurationRecordModal"]).modal("hide");
+			$(xpaths["applicationConfigurationContent"]).block({ message: '<h5><i class="fa-solid fa-spinner fa-spin"></i> Adding/updating record...</h5>' });
 			var saveApplicationConfigurationData=$(xpaths["saveApplicationConfigurationForm"]).serializeObject();
 			console.debug(saveApplicationConfigurationData);
 			apiHandling.processRequest("put", "/api/config/application", csrfToken, saveApplicationConfigurationData)
@@ -55,7 +97,6 @@ var applicationConfigurationProcessing = (function() {
 	var saveApplicationConfiguration_success=function(applicationConfiguration) {
 		console.debug(applicationConfiguration);
 		toastr.success("Application Configuration record saved.");
-		$(xpaths["addOrEditApplicationConfigurationRecordModal"]).modal("hide");
 		$(xpaths["saveApplicationConfigurationForm"])[0].reset();
 		getApplicationConfigurationList();
 	};
@@ -109,6 +150,8 @@ var applicationConfigurationProcessing = (function() {
 	var init = function() {
 		$(xpaths["saveApplicationConfigurationButton"]).click(saveApplicationConfiguration);
 		$(xpaths["applicationConfigurationContent"]).on("click",xpaths["editApplicationConfigurationButtons"],showEditModal);
+		$(xpaths["applicationConfigurationContent"]).on("click",xpaths["deleteApplicationConfigurationButtons"],showDeleteModal);
+		$(xpaths["confirmDeleteApplicationConfigurationRecordButton"]).click(deleteApplicationConfigurationRecord);
 		
 		$("button#addApplicationConfigurationRecordButton").on("click",resetAddRecordForm);
 		
