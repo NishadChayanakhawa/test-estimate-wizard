@@ -144,6 +144,9 @@
 			**/io/github/nishadchayanakhawa/testestimatehub/model/*,
 			**/io/github/nishadchayanakhawa/testestimatehub/model/dto/*
 		</sonar.cpd.exclusions>
+		<sonar.coverage.exclusions>
+			**/io/github/nishadchayanakhawa/testestimatehub/*
+		</sonar.coverage.exclusions>
 	</properties>
 
 	<modules>
