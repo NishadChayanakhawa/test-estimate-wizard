@@ -6,10 +6,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import io.github.nishadchayanakhawa.testestimatehub.services.UserService;
+import io.github.nishadchayanakhawa.testestimatehub.services.TestTypeService;
+import io.github.nishadchayanakhawa.testestimatehub.services.ChangeTypeConfigurationServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import io.github.nishadchayanakhawa.testestimatehub.model.Role;
 import io.github.nishadchayanakhawa.testestimatehub.model.User;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.TestTypeDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.ChangeTypeConfigurationDTO;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Base64.Encoder;
@@ -23,6 +27,12 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private ChangeTypeConfigurationServices changeTypeConfigurationServices;
+	
+	@Autowired
+	private TestTypeService testTypeService;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -88,6 +98,21 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 			user.setRole(Role.AUTOMATION_MANAGER);
 			userService.addUser(user);
 			CommandLineAppStartupRunner.logger.warn("Username: automationmanager Password: {}",generatedPassword);
+		}
+		
+		if(changeTypeConfigurationServices.getAll().isEmpty()) {
+			CommandLineAppStartupRunner.logger.warn("Change Type Configuration list is empty. Creating default record.");
+			ChangeTypeConfigurationDTO changeTypeConfigurationDTO=new ChangeTypeConfigurationDTO
+					("Significant Change",1.3,10.0,20.0,30.0);
+			ChangeTypeConfigurationDTO createdCangeTypeConfigurationDTO=changeTypeConfigurationServices.addOrUpdate(changeTypeConfigurationDTO);
+			CommandLineAppStartupRunner.logger.warn("Test Type Configuration record created: {}",createdCangeTypeConfigurationDTO);
+		}
+		
+		if(testTypeService.getAll().isEmpty()) {
+			CommandLineAppStartupRunner.logger.warn("Test Type Configuration list is empty. Creating default record.");
+			TestTypeDTO testTypeDTO=new TestTypeDTO(0,"SIT",1.0,20.0,20.0);
+			TestTypeDTO createdTestTypeDTO=testTypeService.addOrUpdate(testTypeDTO);
+			CommandLineAppStartupRunner.logger.warn("Test Type Configuration record created: {}",createdTestTypeDTO);
 		}
 	}
 

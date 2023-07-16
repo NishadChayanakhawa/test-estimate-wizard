@@ -1,11 +1,10 @@
 package io.github.nishadchayanakhawa.testestimatehub.tests;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
@@ -20,24 +19,22 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.github.nishadchayanakhawa.testestimatehub.TestEstimateHubApplication;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.ChangeTypeConfigurationDTO;
-import org.springframework.test.web.servlet.ResultActions;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.TestTypeDTO;
 
 @TestMethodOrder(OrderAnnotation.class)
 @SpringBootTest(classes = TestEstimateHubApplication.class,webEnvironment=SpringBootTest.WebEnvironment.DEFINED_PORT)
-class ChangeTypeConfigurationApiTests {
-private static final Logger logger=LoggerFactory.getLogger(ChangeTypeConfigurationApiTests.class);
+class TestTypeProcessingApiTests {
+	private static final Logger logger=LoggerFactory.getLogger(TestTypeProcessingApiTests.class);
 	
 	@Value("${server.port}")
 	private int serverPort;
 	
-	private static long changeTypeId;
+	private static long testTypeId;
 	
 	private String url;
 	
@@ -58,43 +55,45 @@ private static final Logger logger=LoggerFactory.getLogger(ChangeTypeConfigurati
           .webAppContextSetup(context)
           .build();
         url=String.format("http://localhost:%d", serverPort);
-        ChangeTypeConfigurationApiTests.logger.info("{}",url);
+        TestTypeProcessingApiTests.logger.info("{}",url);
     }
 	
 	@Test
     @Order(1)
     void addChangeType_test() throws Exception {
-		ChangeTypeConfigurationDTO changeTypeConfigurationDTO=new ChangeTypeConfigurationDTO
-				("Major Change",12.1,20,20,30);
-		logger.info(objectMapper.writeValueAsString(changeTypeConfigurationDTO));
+		TestTypeDTO testTypeDTO=new TestTypeDTO
+				(0,"UT",0.3,10.0,0.0);
+		logger.info(objectMapper.writeValueAsString(testTypeDTO));
 		ResultActions result=mvc
 		.perform(
-				put(url + "/api/config/changeType")
+				put(url + "/api/config/testType")
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
-				.content(objectMapper.writeValueAsString(changeTypeConfigurationDTO))
+				.content(objectMapper.writeValueAsString(testTypeDTO))
 				.with(user("admin").password("admin").roles("ADMIN")));
 		result.andExpect(status().isCreated());
-		ChangeTypeConfigurationDTO response=objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ChangeTypeConfigurationDTO.class);
-		ChangeTypeConfigurationApiTests.changeTypeId=response.getId();
-		Assertions.assertThat(response.getName()).isEqualTo("Major Change");
+		logger.info(result.andReturn().getResponse().getContentAsString());
+		TestTypeDTO response=objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), TestTypeDTO.class);
+		TestTypeProcessingApiTests.testTypeId=response.getId();
+		Assertions.assertThat(response.getName()).isEqualTo("UT");
 	}
 	
 	@Test
-    @Order(2)
-    void updateChangeType_test() throws Exception {
-		ChangeTypeConfigurationDTO changeTypeConfigurationDTO=new ChangeTypeConfigurationDTO
-				("Major Change Modified",12.1,20,20,30);
-		changeTypeConfigurationDTO.setId(ChangeTypeConfigurationApiTests.changeTypeId);
-		logger.info(objectMapper.writeValueAsString(changeTypeConfigurationDTO));
+    @Order(1)
+    void modifyChangeType_test() throws Exception {
+		TestTypeDTO testTypeDTO=new TestTypeDTO
+				(TestTypeProcessingApiTests.testTypeId,"UAT",0.3,10.0,0.0);
+		logger.info(objectMapper.writeValueAsString(testTypeDTO));
 		ResultActions result=mvc
 		.perform(
-				put(url + "/api/config/changeType")
+				put(url + "/api/config/testType")
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
-				.content(objectMapper.writeValueAsString(changeTypeConfigurationDTO))
+				.content(objectMapper.writeValueAsString(testTypeDTO))
 				.with(user("admin").password("admin").roles("ADMIN")));
 		result.andExpect(status().isOk());
-		ChangeTypeConfigurationDTO response=objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ChangeTypeConfigurationDTO.class);
-		Assertions.assertThat(response.getName()).isEqualTo("Major Change Modified");
+		logger.info(result.andReturn().getResponse().getContentAsString());
+		TestTypeDTO response=objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), TestTypeDTO.class);
+		TestTypeProcessingApiTests.testTypeId=response.getId();
+		Assertions.assertThat(response.getName()).isEqualTo("UAT");
 	}
 	
 	@Test
@@ -102,11 +101,11 @@ private static final Logger logger=LoggerFactory.getLogger(ChangeTypeConfigurati
     void getChangeType_test() throws Exception {
 		ResultActions result=mvc
 		.perform(
-				get(url + "/api/config/changeType/" + ChangeTypeConfigurationApiTests.changeTypeId)
+				get(url + "/api/config/testType/1")
 				.with(user("admin").password("admin").roles("ADMIN")));
 		result.andExpect(status().isOk());
-		ChangeTypeConfigurationDTO response=objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ChangeTypeConfigurationDTO.class);
-		Assertions.assertThat(response.getName()).isEqualTo("Major Change Modified");
+		TestTypeDTO response=objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), TestTypeDTO.class);
+		Assertions.assertThat(response.getName()).isEqualTo("SIT");
 	}
 	
 	@Test
@@ -114,24 +113,24 @@ private static final Logger logger=LoggerFactory.getLogger(ChangeTypeConfigurati
     void getAllChangeTypes_test() throws Exception {
 		ResultActions result=mvc
 		.perform(
-				get(url + "/api/config/changeType")
+				get(url + "/api/config/testType")
 				.with(user("admin").password("admin").roles("ADMIN")));
 		result.andExpect(status().isOk());
-		ChangeTypeConfigurationDTO[] response=objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ChangeTypeConfigurationDTO[].class);
-		Assertions.assertThat(response[0].getName()).isEqualTo("Significant Change");
+		TestTypeDTO[] response=objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), TestTypeDTO[].class);
+		Assertions.assertThat(response[0].getName()).isEqualTo("SIT");
+		Assertions.assertThat(response[1].getName()).isEqualTo("UAT");
 	}
 	
 	@Test
     @Order(5)
     void deleteChangeType_test() throws Exception {
-		ChangeTypeConfigurationDTO changeTypeConfigurationDTO=new ChangeTypeConfigurationDTO();
-		changeTypeConfigurationDTO.setId(ChangeTypeConfigurationApiTests.changeTypeId);
-		logger.info(objectMapper.writeValueAsString(changeTypeConfigurationDTO));
+		TestTypeDTO testTypeDTO=new TestTypeDTO();
+		testTypeDTO.setId(TestTypeProcessingApiTests.testTypeId);
 		ResultActions result=mvc
 		.perform(
-				delete(url + "/api/config/changeType")
+				delete(url + "/api/config/testType")
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
-				.content(objectMapper.writeValueAsString(changeTypeConfigurationDTO))
+				.content(objectMapper.writeValueAsString(testTypeDTO))
 				.with(user("admin").password("admin").roles("ADMIN")));
 		result.andExpect(status().isOk());
 	}
