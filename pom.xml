@@ -141,8 +141,8 @@
 		<skipCodeCoverageCheck>false</skipCodeCoverageCheck>
 		<skipTests>false</skipTests>
 		<sonar.cpd.exclusions>
-			io/github/nishadchayanakhawa/testestimatehub/model/*,
-			io/github/nishadchayanakhawa/testestimatehub/model/dto/*
+			**/io/github/nishadchayanakhawa/testestimatehub/model/*,
+			**/io/github/nishadchayanakhawa/testestimatehub/model/dto/*
 		</sonar.cpd.exclusions>
 	</properties>
 
