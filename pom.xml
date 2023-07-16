@@ -140,6 +140,10 @@
 		<spring.profiles.active>dev</spring.profiles.active>
 		<skipCodeCoverageCheck>false</skipCodeCoverageCheck>
 		<skipTests>false</skipTests>
+		<sonar.cpd.exclusions>
+			**/io/github/nishadchayanakhawa/testestimatehub/model/*,
+			**/io/github/nishadchayanakhawa/testestimatehub/model/dto/*
+		</sonar.cpd.exclusions>
 	</properties>
 
 	<modules>
