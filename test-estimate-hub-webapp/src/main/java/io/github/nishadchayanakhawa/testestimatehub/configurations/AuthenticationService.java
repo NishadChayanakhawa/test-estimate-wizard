@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import io.github.nishadchayanakhawa.testestimatehub.model.User;
 import io.github.nishadchayanakhawa.testestimatehub.services.UserService;
 import org.slf4j.Logger;
+
 /**
  * Authentication Service
  * @author nishad
