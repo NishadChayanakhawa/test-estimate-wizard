@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import io.github.nishadchayanakhawa.testestimatehub.services.UserService;
 import io.github.nishadchayanakhawa.testestimatehub.services.TestTypeService;
-import io.github.nishadchayanakhawa.testestimatehub.services.ChangeTypeConfigurationServices;
+import io.github.nishadchayanakhawa.testestimatehub.services.ChangeTypeConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import io.github.nishadchayanakhawa.testestimatehub.model.Role;
@@ -29,7 +29,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 	private UserService userService;
 	
 	@Autowired
-	private ChangeTypeConfigurationServices changeTypeConfigurationServices;
+	private ChangeTypeConfigurationService changeTypeConfigurationService;
 	
 	@Autowired
 	private TestTypeService testTypeService;
@@ -100,11 +100,11 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 			CommandLineAppStartupRunner.logger.warn("Username: automationmanager Password: {}",generatedPassword);
 		}
 		
-		if(changeTypeConfigurationServices.getAll().isEmpty()) {
+		if(changeTypeConfigurationService.getAll().isEmpty()) {
 			CommandLineAppStartupRunner.logger.warn("Change Type Configuration list is empty. Creating default record.");
 			ChangeTypeConfigurationDTO changeTypeConfigurationDTO=new ChangeTypeConfigurationDTO
 					("Significant Change",1.3,10.0,20.0,30.0);
-			ChangeTypeConfigurationDTO createdCangeTypeConfigurationDTO=changeTypeConfigurationServices.addOrUpdate(changeTypeConfigurationDTO);
+			ChangeTypeConfigurationDTO createdCangeTypeConfigurationDTO=changeTypeConfigurationService.addOrUpdate(changeTypeConfigurationDTO);
 			CommandLineAppStartupRunner.logger.warn("Test Type Configuration record created: {}",createdCangeTypeConfigurationDTO);
 		}
 		
