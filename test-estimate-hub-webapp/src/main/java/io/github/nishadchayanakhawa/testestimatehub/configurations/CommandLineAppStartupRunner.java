@@ -8,15 +8,18 @@ import org.springframework.stereotype.Component;
 import io.github.nishadchayanakhawa.testestimatehub.services.UserService;
 import io.github.nishadchayanakhawa.testestimatehub.services.TestTypeService;
 import io.github.nishadchayanakhawa.testestimatehub.services.ChangeTypeConfigurationService;
+import io.github.nishadchayanakhawa.testestimatehub.services.GeneralConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import io.github.nishadchayanakhawa.testestimatehub.model.Role;
 import io.github.nishadchayanakhawa.testestimatehub.model.User;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.TestTypeDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.ChangeTypeConfigurationDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.GeneralConfigurationDTO;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Base64.Encoder;
+import java.util.NoSuchElementException;
 
 @Component
 public class CommandLineAppStartupRunner implements CommandLineRunner {
@@ -30,6 +33,9 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 	
 	@Autowired
 	private ChangeTypeConfigurationService changeTypeConfigurationService;
+	
+	@Autowired
+	private GeneralConfigurationService generalConfigurationService;
 	
 	@Autowired
 	private TestTypeService testTypeService;
@@ -113,6 +119,15 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 			TestTypeDTO testTypeDTO=new TestTypeDTO(0,"SIT",1.0,20.0,20.0);
 			TestTypeDTO createdTestTypeDTO=testTypeService.addOrUpdate(testTypeDTO);
 			CommandLineAppStartupRunner.logger.warn("Test Type Configuration record created: {}",createdTestTypeDTO);
+		}
+		try {
+			generalConfigurationService.get();
+		} catch(NoSuchElementException e) {
+			CommandLineAppStartupRunner.logger.warn("General Configuration is empty. Creating default record.");
+			GeneralConfigurationDTO generalConfigurationDTO=new GeneralConfigurationDTO
+					(21,18,15,12,9,18,15,12,9,6,4,3,2,1,0.5,5,4,3,2,1,80.0,90.0,100,110,120);
+			GeneralConfigurationDTO loadedGeneralConfiguration=generalConfigurationService.save(generalConfigurationDTO);
+			CommandLineAppStartupRunner.logger.warn("General Configuration record created: {}",loadedGeneralConfiguration);
 		}
 	}
 
