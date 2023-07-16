@@ -31,9 +31,9 @@ public class GeneralConfigurationDTO {
 	private double automationMaintenanceProductivityForHighComplexity;
 	private double automationMaintenanceProductivityForVeryHighHighComplexity;
 	
-	private double requirementModifierForVeryLowComplexity;
-	private double requirementModifierForLowComplexity;
-	private double requirementModifierForMediumComplexity;
-	private double requirementModifierForHighComplexity;
-	private double requirementModifierForVeryHighHighComplexity;
+	private double requirementModifierPercentageForVeryLowComplexity;
+	private double requirementModifierPercentageForLowComplexity;
+	private double requirementModifierPercentageForMediumComplexity;
+	private double requirementModifierPercentageForHighComplexity;
+	private double requirementModifierPercentageForVeryHighHighComplexity;
 }
