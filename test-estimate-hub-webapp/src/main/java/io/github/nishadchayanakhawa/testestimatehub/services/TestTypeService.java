@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import io.github.nishadchayanakhawa.testestimatehub.jparepositories.TestTypeRepository;
@@ -27,7 +28,7 @@ public class TestTypeService {
 	}
 	
 	public List<TestTypeDTO> getAll() {
-		return testTypeRepository.findAll().stream()
+		return testTypeRepository.findAll(Sort.by(Sort.Direction.ASC, "id")).stream()
 				.map(t -> modelMapper.map(t, TestTypeDTO.class))
 				.toList();
 	}

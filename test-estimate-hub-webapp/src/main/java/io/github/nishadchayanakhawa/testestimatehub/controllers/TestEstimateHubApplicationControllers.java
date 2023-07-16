@@ -29,4 +29,9 @@ public class TestEstimateHubApplicationControllers {
 	public String getChangeTypeConfigurationPage() {
 		return "configuration/changeType";
 	}
+	
+	@GetMapping("/configuration/testType")
+	public String getTestTypeConfigurationPage() {
+		return "configuration/testType";
+	}
 }

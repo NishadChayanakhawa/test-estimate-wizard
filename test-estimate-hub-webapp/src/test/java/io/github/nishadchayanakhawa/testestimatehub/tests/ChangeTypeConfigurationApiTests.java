@@ -65,7 +65,7 @@ private static final Logger logger=LoggerFactory.getLogger(ChangeTypeConfigurati
     @Order(1)
     void addChangeType_test() throws Exception {
 		ChangeTypeConfigurationDTO changeTypeConfigurationDTO=new ChangeTypeConfigurationDTO
-				("Significant Change",12.1,20,20,30);
+				("Major Change",12.1,20,20,30);
 		logger.info(objectMapper.writeValueAsString(changeTypeConfigurationDTO));
 		ResultActions result=mvc
 		.perform(
@@ -76,14 +76,14 @@ private static final Logger logger=LoggerFactory.getLogger(ChangeTypeConfigurati
 		result.andExpect(status().isCreated());
 		ChangeTypeConfigurationDTO response=objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ChangeTypeConfigurationDTO.class);
 		ChangeTypeConfigurationApiTests.changeTypeId=response.getId();
-		Assertions.assertThat(response.getName()).isEqualTo("Significant Change");
+		Assertions.assertThat(response.getName()).isEqualTo("Major Change");
 	}
 	
 	@Test
     @Order(2)
     void updateChangeType_test() throws Exception {
 		ChangeTypeConfigurationDTO changeTypeConfigurationDTO=new ChangeTypeConfigurationDTO
-				("Significant Change Modified",12.1,20,20,30);
+				("Major Change Modified",12.1,20,20,30);
 		changeTypeConfigurationDTO.setId(ChangeTypeConfigurationApiTests.changeTypeId);
 		logger.info(objectMapper.writeValueAsString(changeTypeConfigurationDTO));
 		ResultActions result=mvc
@@ -94,7 +94,7 @@ private static final Logger logger=LoggerFactory.getLogger(ChangeTypeConfigurati
 				.with(user("admin").password("admin").roles("ADMIN")));
 		result.andExpect(status().isOk());
 		ChangeTypeConfigurationDTO response=objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ChangeTypeConfigurationDTO.class);
-		Assertions.assertThat(response.getName()).isEqualTo("Significant Change Modified");
+		Assertions.assertThat(response.getName()).isEqualTo("Major Change Modified");
 	}
 	
 	@Test
@@ -106,7 +106,7 @@ private static final Logger logger=LoggerFactory.getLogger(ChangeTypeConfigurati
 				.with(user("admin").password("admin").roles("ADMIN")));
 		result.andExpect(status().isOk());
 		ChangeTypeConfigurationDTO response=objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ChangeTypeConfigurationDTO.class);
-		Assertions.assertThat(response.getName()).isEqualTo("Significant Change Modified");
+		Assertions.assertThat(response.getName()).isEqualTo("Major Change Modified");
 	}
 	
 	@Test
@@ -118,7 +118,7 @@ private static final Logger logger=LoggerFactory.getLogger(ChangeTypeConfigurati
 				.with(user("admin").password("admin").roles("ADMIN")));
 		result.andExpect(status().isOk());
 		ChangeTypeConfigurationDTO[] response=objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ChangeTypeConfigurationDTO[].class);
-		Assertions.assertThat(response[0].getName()).isEqualTo("Significant Change Modified");
+		Assertions.assertThat(response[0].getName()).isEqualTo("Significant Change");
 	}
 	
 	@Test

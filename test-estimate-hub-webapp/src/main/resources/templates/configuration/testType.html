@@ -10,34 +10,34 @@
 	<script th:src="@{/jquery/js/jquery.tmpl.js}"></script>
 	<script th:src="@{/toastr/js/toastr.min.js}"></script>
 	<script th:src="@{/application/js/common/common.js}"></script>
-	<script th:src="@{/application/js/configuration/changeTypeConfigurationProcessing.js}"></script>
+	<script th:src="@{/application/js/configuration/testTypeConfigurationProcessing.js}"></script>
 	<script th:src="@{/datatable/js/datatables.min.js}"></script>
 	<script th:src="@{/datatable/js/dataTables.bootstrap5.min.js}"></script>
 	<script>
 		$(document).ready(function () {
-			changeTypeConfigurationProcessing.init();
+			testTypeConfigurationProcessing.init();
 		});
 	</script>
-	<script id="changeTypeConfigurationRecordListTemplate" type="text/template">
+	<script id="testTypeConfigurationRecordListTemplate" type="text/template">
 		<tr>
 			<td>${name}</td>
-			<td>${testCaseCountModifier}</td>
-			<td>${testStrategyPercentage}%</td>
-			<td>${testPlanningPercentage}%</td>
-			<td>${managementUpliftPercentage}%</td>
+			<td>${relativeTestCasePercentage}%</td>
+			<td>${reExecutionPercentage}%</td>
+			<td>${additionalCycleExecutionPercentage}%</td>
 			<td>
-				<button class="border-0 bg-transparent" id="editChangeTypeConfiguration_${id}">
+				<button class="border-0 bg-transparent" id="editTestTypeConfiguration_${id}">
 					<i class="fa fa-edit"></i> Edit
 				</button>
-				<button class="border-0 bg-transparent text-danger" id="deleteChangeTypeConfiguration_${id}">
+				{%if id>1%}
+				<button class="border-0 bg-transparent text-danger" id="deleteTestTypeConfiguration_${id}">
 					<i class="fa fa-trash"></i> Delete
 				</button>
+				{%/if%}
 			</td>
 		</tr>
 	</script>
-	<script id="changeTypeConfigurationRecordListPlaceholder" type="text/template">
+	<script id="testTypeConfigurationRecordListPlaceholder" type="text/template">
 		<tr class="placeholder-glow">
-			<td><span class="placeholder col-6 bg-dark"></span></td>
 			<td><span class="placeholder col-6 bg-dark"></span></td>
 			<td><span class="placeholder col-6 bg-dark"></span></td>
 			<td><span class="placeholder col-6 bg-dark"></span></td>
@@ -65,76 +65,71 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<form id="deleteChangeTypeConfigurationDeleteForm">
+					<form id="deleteTestTypeConfigurationDeleteForm">
 						<input type="hidden" class="form-control" id="deleteAction_id" name="id" required />
 						Confirm delete operation <span id="usernameDisplay"></span>
 						<hr>
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button id="confirmDeleteChangeTypeConfigurationRecord" type="submit" class="btn btn-danger">Confirm Delete</button>
+						<button id="confirmDeleteTestTypeConfigurationRecord" type="submit" class="btn btn-danger">Confirm Delete</button>
 					</form>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="modal fade modal-lg" id="addOrEditChangeTypeConfigurationRecordModal" tabindex="-1" aria-labelledby="putUserModalLabel" aria-hidden="true">
+	<div class="modal fade modal-lg" id="addOrEditTestTypeConfigurationRecordModal" tabindex="-1" aria-labelledby="putUserModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="exampleModalLabel">Change Type Configuration Record</h1>
+					<h1 class="modal-title fs-5" id="exampleModalLabel">Test Type Configuration Record</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<form id="saveChangeTypeConfigurationForm" autocomplete="off">
+					<form id="saveTestTypeConfigurationForm" autocomplete="off">
 						<input type="hidden" class="form-control" id="id" name="id" />
 						<div class="form-floating mb-3">
 							<input type="text" class="form-control" id="name" name="name" required />
-							<label for="name">Change Type</label>
+							<label for="name">Test Type</label>
 						</div>
 						<div class="form-floating mb-3">
-							<input type="text" class="form-control constraint-numeric" id="testCaseCountModifier" name="testCaseCountModifier" required />
-							<label for="testCaseCountModifier">Test Case Count Modifier</label>
+							<input type="text" class="form-control constraint-numeric" id="relativeTestCasePercentage" name="relativeTestCasePercentage" required />
+							<label for="relativeTestCasePercentage">Relative Test Case %</label>
 						</div>
 						<div class="form-floating mb-3">
-							<input type="text" class="form-control constraint-numeric" id="testStrategyPercentage" name="testStrategyPercentage" required />
-							<label for="testStrategyPercentage">Test Strategy Effort %</label>
+							<input type="text" class="form-control constraint-numeric" id="reExecutionPercentage" name="reExecutionPercentage" required />
+							<label for="reExecutionPercentage">Re-Execution %</label>
 						</div>
 						<div class="form-floating mb-3">
-							<input type="text" class="form-control constraint-numeric" id="testPlanningPercentage" name="testPlanningPercentage" required />
-							<label for="testPlanningPercentage">Test Planning Effort %</label>
-						</div>
-						<div class="form-floating mb-3">
-							<input type="text" class="form-control constraint-numeric" id="managementUpliftPercentage" name="managementUpliftPercentage" required />
-							<label for="managementUpliftPercentage">Management Uplift %</label>
+							<input type="text" class="form-control constraint-numeric" id="additionalCycleExecutionPercentage" name="additionalCycleExecutionPercentage" required />
+							<label for="additionalCycleExecutionPercentage">Additional Cycle Execution %</label>
 						</div>
 						<hr>
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button id="saveChangeTypeConfiguration" type="submit" class="btn btn-primary">Save changes</button>
+						<button id="saveTestTypeConfiguration" type="submit" class="btn btn-primary">Save changes</button>
 					</form>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="p-3" id="changeTypeConfigurationContent">
-		<button class="btn btn-sm btn-primary" id="addChangeTypeConfigurationRecordButton">
-			<i class="fa fa-plus"></i> Add Change Type Configuration Record
+	<div class="p-3" id="testTypeConfigurationContent">
+		<button class="btn btn-sm btn-primary" id="addTestTypeConfigurationRecordButton">
+			<i class="fa fa-plus"></i> Add Test Type Configuration Record
 		</button>
 		<br>
 		<br>
-		<table class="table table-striped" id="changeTypeConfigurationRecordTable">
-			<caption>Change Type Configuration Records</caption>
+		<table class="table table-striped" id="testTypeConfigurationRecordTable">
+			<caption>Test Type Configuration Records</caption>
 			<thead>
 				<tr>
-					<th>Change Type</th>
-					<th>Test Case Count Modifier</th>
-					<th>Test Strategy Effort</th>
-					<th>Test Planning Effort</th>
-					<th>Management Uplift</th>
+					<th>Test Type</th>
+					<th>Relative Test Case Percentage</th>
+					<th>Re-Execution Percentage</th>
+					<th>Additional Cycle Execution Percentage</th>
 					<th>Actions</th>
 				</tr>
 			</thead>
-			<tbody id="changeTypeConfigurationRecordTableBody">
+			<tbody id="testTypeConfigurationRecordTableBody">
 			</tbody>
 		</table>
 	</div>
