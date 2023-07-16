@@ -5,9 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.github.nishadchayanakhawa.testestimatehub.services.UserService;
 import io.github.nishadchayanakhawa.testestimatehub.services.TestTypeService;
 import org.slf4j.Logger;
@@ -31,9 +28,6 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 	
 	@Autowired
 	private TestTypeService testTypeService;
-	
-	@Autowired
-	private ObjectMapper objectMapper;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -105,7 +99,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 			CommandLineAppStartupRunner.logger.warn("Test Type Configuration list is empty. Creating default record.");
 			TestTypeDTO testTypeDTO=new TestTypeDTO(0,"SIT",1.0,20.0,20.0);
 			TestTypeDTO createdTestTypeDTO=testTypeService.addOrUpdate(testTypeDTO);
-			CommandLineAppStartupRunner.logger.warn("Test Type Configuration record created: {}",objectMapper.writeValueAsString(createdTestTypeDTO));
+			CommandLineAppStartupRunner.logger.warn("Test Type Configuration record created: {}",createdTestTypeDTO);
 		}
 	}
 

@@ -28,13 +28,13 @@ import io.github.nishadchayanakhawa.testestimatehub.model.dto.TestTypeDTO;
 
 @TestMethodOrder(OrderAnnotation.class)
 @SpringBootTest(classes = TestEstimateHubApplication.class,webEnvironment=SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class TestTypeProcessingApiTests {
+class TestTypeProcessingApiTests {
 	private static final Logger logger=LoggerFactory.getLogger(TestTypeProcessingApiTests.class);
 	
 	@Value("${server.port}")
 	private int serverPort;
 	
-private static long testTypeId;
+	private static long testTypeId;
 	
 	private String url;
 	
