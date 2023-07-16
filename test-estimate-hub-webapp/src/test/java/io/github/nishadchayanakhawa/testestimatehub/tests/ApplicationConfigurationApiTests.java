@@ -23,6 +23,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.nishadchayanakhawa.testestimatehub.TestEstimateHubApplication;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.ApplicationConfigurationDTO;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 
 @TestMethodOrder(OrderAnnotation.class)
 @SpringBootTest(classes = TestEstimateHubApplication.class,webEnvironment=SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -101,6 +102,20 @@ class ApplicationConfigurationApiTests {
 		mvc
 		.perform(
 				post(url + "/api/config/application")
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.content(objectMapper.writeValueAsString(applicationConfigurationDTO))
+				.with(user("admin").password("admin").roles("ADMIN")))
+		.andExpect(status().isOk()).andReturn();
+	}
+	
+	@Test
+    @Order(5)
+    void deleteApplicationConfig_test() throws Exception {
+		ApplicationConfigurationDTO applicationConfigurationDTO=new ApplicationConfigurationDTO
+				("App1","Module1","SubModule1",0,null);
+		mvc
+		.perform(
+				delete(url + "/api/config/application")
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(objectMapper.writeValueAsString(applicationConfigurationDTO))
 				.with(user("admin").password("admin").roles("ADMIN")))
