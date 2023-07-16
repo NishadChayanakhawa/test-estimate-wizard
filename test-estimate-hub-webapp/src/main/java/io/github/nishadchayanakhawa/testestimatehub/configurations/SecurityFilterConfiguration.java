@@ -15,6 +15,8 @@ public class SecurityFilterConfiguration {
 		return http
 				.authorizeHttpRequests(request -> request.requestMatchers("/home")
 						.hasAnyRole(Role.ADMIN.toString(), Role.TESTER.toString(), Role.TEST_LEAD.toString(), Role.TEST_MANAGER.toString(), Role.AUTOMATION_MANAGER.toString())
+						.requestMatchers("/configuration/**")
+							.hasAnyRole(Role.ADMIN.toString(), Role.TEST_MANAGER.toString(), Role.AUTOMATION_MANAGER.toString())
 						.requestMatchers("/login").permitAll()
 						.requestMatchers("/bootstrap/**").permitAll()
 						.requestMatchers("/images/**").permitAll()

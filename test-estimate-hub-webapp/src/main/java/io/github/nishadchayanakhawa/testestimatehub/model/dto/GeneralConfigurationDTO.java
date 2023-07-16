@@ -7,6 +7,8 @@ import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class GeneralConfigurationDTO {
+	private long id;
+	
 	private double testCasePreparationProductivityForVeryLowComplexity;
 	private double testCasePreparationProductivityForLowComplexity;
 	private double testCasePreparationProductivityForMediumComplexity;
@@ -36,4 +38,8 @@ public class GeneralConfigurationDTO {
 	private double requirementModifierPercentageForMediumComplexity;
 	private double requirementModifierPercentageForHighComplexity;
 	private double requirementModifierPercentageForVeryHighHighComplexity;
+	
+	private double complexityWeightagePercentageForTestDataPreparation;
+	private double complexityWeightagePercentageForTestConfiguration;
+	private double complexityWeightagePercentageForTestValidation;
 }

@@ -74,7 +74,7 @@
 				</ul>
 			</div>
 			
-			<div class="accordion-item" sec:authorize="hasAuthority('ROLE_ADMIN')">
+			<div class="accordion-item" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_TEST_MANAGER','ROLE_AUTOMATION_MANAGER')">
 				<div class="nav-item dropdown ms-3">
 					<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
 						aria-expanded="false">
@@ -85,6 +85,7 @@
 						<li><a class="dropdown-item" th:href="@{/configuration/application}">Application Configuration</a></li>
 						<li><a class="dropdown-item" th:href="@{/configuration/changeType}">Change Type Configuration</a></li>
 						<li><a class="dropdown-item" th:href="@{/configuration/testType}">Test Type Configuration</a></li>
+						<li><a class="dropdown-item" th:href="@{/configuration/general}">General Configuration</a></li>
 					</ul>
 				</div>
 			</div>

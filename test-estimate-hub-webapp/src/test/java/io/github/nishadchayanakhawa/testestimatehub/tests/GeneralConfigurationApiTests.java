@@ -30,7 +30,7 @@ import io.github.nishadchayanakhawa.testestimatehub.model.dto.GeneralConfigurati
 
 @TestMethodOrder(OrderAnnotation.class)
 @SpringBootTest(classes = TestEstimateHubApplication.class,webEnvironment=SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class GeneralConfigurationApiTests {
+class GeneralConfigurationApiTests {
 private static final Logger logger=LoggerFactory.getLogger(GeneralConfigurationApiTests.class);
 	
 	@Value("${server.port}")

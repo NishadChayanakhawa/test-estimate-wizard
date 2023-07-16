@@ -16,6 +16,7 @@ public class GeneralConfigurationService {
 	ModelMapper modelMapper;
 	
 	public GeneralConfigurationDTO save(GeneralConfigurationDTO generalConfigurationDTO) {
+		generalConfigurationDTO.setId(1L);
 		return 
 			modelMapper.map
 				(generalConfigurationRepository.save

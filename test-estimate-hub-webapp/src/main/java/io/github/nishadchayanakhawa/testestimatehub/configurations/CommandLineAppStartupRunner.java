@@ -125,7 +125,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 		} catch(NoSuchElementException e) {
 			CommandLineAppStartupRunner.logger.warn("General Configuration is empty. Creating default record.");
 			GeneralConfigurationDTO generalConfigurationDTO=new GeneralConfigurationDTO
-					(21,18,15,12,9,18,15,12,9,6,4,3,2,1,0.5,5,4,3,2,1,80.0,90.0,100,110,120);
+					(1L,21,18,15,12,9,18,15,12,9,6,4,3,2,1,0.5,5,4,3,2,1,80.0,90.0,100,110,120,22.0,66.0,22.0);
 			GeneralConfigurationDTO loadedGeneralConfiguration=generalConfigurationService.save(generalConfigurationDTO);
 			CommandLineAppStartupRunner.logger.warn("General Configuration record created: {}",loadedGeneralConfiguration);
 		}

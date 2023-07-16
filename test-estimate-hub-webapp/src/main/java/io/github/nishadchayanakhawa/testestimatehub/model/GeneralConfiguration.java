@@ -8,15 +8,12 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.AccessLevel;
 
 @Entity
 @Getter @Setter @NoArgsConstructor
 public class GeneralConfiguration {
 	@Id
 	@GeneratedValue
-	@Getter(AccessLevel.NONE)
-	@Setter(AccessLevel.NONE)
 	private long id;
 	@ManyToOne(cascade=CascadeType.ALL)
 	private ValueByComplexity testCasePreparationProductivity;
@@ -28,4 +25,8 @@ public class GeneralConfiguration {
 	private ValueByComplexity automationMaintenanceProductivity;
 	@ManyToOne(cascade=CascadeType.ALL)
 	private ValueByComplexity requirementModifierPercentage;
+	
+	private double complexityWeightagePercentageForTestDataPreparation;
+	private double complexityWeightagePercentageForTestConfiguration;
+	private double complexityWeightagePercentageForTestValidation;
 }

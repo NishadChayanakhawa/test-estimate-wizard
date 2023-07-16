@@ -18,7 +18,7 @@
 			userManagementProcessing.init();
 		});
 	</script>
-	<script id="userListTemplate" type="text/template">
+	<script id="userListTemplate" type="text/template" sec:authorize="hasRole('ROLE_ADMIN')">
 		<tr>
 			<td>${username}</td>
 			<td>${firstName}</td>
@@ -32,6 +32,18 @@
 				<button class="border-0 bg-transparent text-danger" id="deleteUser_${username}">
 					<i class="fa fa-trash"></i> Delete
 				</button>
+			</td>
+		</tr>
+	</script>
+	<script id="userListTemplate" type="text/template" sec:authorize="hasAnyRole('ROLE_TEST_MANAGER','ROLE_AUTOMATION_MANAGER')">
+		<tr>
+			<td>${username}</td>
+			<td>${firstName}</td>
+			<td>${lastName}</td>
+			<td>${email}</td>
+			<td>${role}</td>
+			<td>
+				<i class="fa-solid fa-ban"></i> N/A
 			</td>
 		</tr>
 	</script>
@@ -195,7 +207,7 @@
 	</div>
 
 	<div class="p-3" id="userManagementContent">
-		<button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal" id="addUserButton">
+		<button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal" id="addUserButton" sec:authorize="hasRole('ROLE_ADMIN')">
 			<i class="fa fa-plus"></i> Add User
 		</button>
 		<br>

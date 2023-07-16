@@ -18,7 +18,7 @@
 			testTypeConfigurationProcessing.init();
 		});
 	</script>
-	<script id="testTypeConfigurationRecordListTemplate" type="text/template">
+	<script id="testTypeConfigurationRecordListTemplate" type="text/template" sec:authorize="hasRole('ROLE_ADMIN')">
 		<tr>
 			<td>${name}</td>
 			<td>${relativeTestCasePercentage}%</td>
@@ -33,6 +33,17 @@
 					<i class="fa fa-trash"></i> Delete
 				</button>
 				{%/if%}
+			</td>
+		</tr>
+	</script>
+	<script id="testTypeConfigurationRecordListTemplate" type="text/template" sec:authorize="hasAnyRole('ROLE_TEST_MANAGER','ROLE_AUTOMATION_MANAGER')">
+		<tr>
+			<td>${name}</td>
+			<td>${relativeTestCasePercentage}%</td>
+			<td>${reExecutionPercentage}%</td>
+			<td>${additionalCycleExecutionPercentage}%</td>
+			<td>
+				<i class="fa-solid fa-ban"></i> N/A
 			</td>
 		</tr>
 	</script>
@@ -113,7 +124,7 @@
 	</div>
 
 	<div class="p-3" id="testTypeConfigurationContent">
-		<button class="btn btn-sm btn-primary" id="addTestTypeConfigurationRecordButton">
+		<button class="btn btn-sm btn-primary" id="addTestTypeConfigurationRecordButton" sec:authorize="hasRole('ROLE_ADMIN')">
 			<i class="fa fa-plus"></i> Add Test Type Configuration Record
 		</button>
 		<br>
