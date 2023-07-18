@@ -2,16 +2,14 @@ package io.github.nishadchayanakhawa.testestimatehub.model.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-public class ReleaseDTO {
+public class RequirementDTO {
 	private long id;
 	private String identifier;
-	private String name;
-	private List<ChangeDTO> changes;
+	private String description;
+	private String complexityCode;
+	private String complexityDisplayValue;
 }
