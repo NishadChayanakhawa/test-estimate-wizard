@@ -13,15 +13,15 @@ $.fn.validate = function() {
 			}
 		}
 	});
-	
-	if(!requiredValidationResult) {
+
+	if (!requiredValidationResult) {
 		toastr.error('Please fill required values.');
 	}
-	
-	var numericValidationResult=true;
-	var numericInputs=$(this).find("input[class*='constraint-numeric']");
+
+	var numericValidationResult = true;
+	var numericInputs = $(this).find("input[class*='constraint-numeric']");
 	numericInputs.each(function() {
-		if(!isNumeric($(this).val())) {
+		if (!isNumeric($(this).val())) {
 			numericValidationResult = false;
 			if (!$(this).hasClass('is-invalid')) {
 				$(this).addClass('is-invalid');
@@ -32,11 +32,6 @@ $.fn.validate = function() {
 			}
 		}
 	});
-	
-	if(!numericValidationResult) {
-		toastr.error('Please enter numeric values.');
-	}
-	
 	return requiredValidationResult && numericValidationResult;
 }
 
@@ -69,8 +64,8 @@ $.fn.serializeObject = function() {
 	return o;
 }
 
-var isNumeric=function(str) {
-  if (typeof str != "string") return false // we only process strings!  
-  return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
-         !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+var isNumeric = function(str) {
+	if (typeof str != "string") return false // we only process strings!  
+	return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+		!isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
 };
