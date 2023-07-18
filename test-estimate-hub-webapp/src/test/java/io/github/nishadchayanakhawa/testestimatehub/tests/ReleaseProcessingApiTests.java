@@ -36,6 +36,8 @@ class ReleaseProcessingApiTests {
 	
 	private String url;
 	
+	private static Long releaseId;
+	
 	@Autowired
 	private ObjectMapper objectMapper;
 	
@@ -60,7 +62,7 @@ class ReleaseProcessingApiTests {
     @Order(1)
     void addChangeType_test() throws Exception {
 		ReleaseDTO releaseDTO=new ReleaseDTO
-				("JULY-2023","July 2023 Major Release");
+				(0,"JULY-2023","July 2023 Major Release");
 		logger.info(objectMapper.writeValueAsString(releaseDTO));
 		ResultActions result=mvc
 		.perform(
@@ -71,6 +73,7 @@ class ReleaseProcessingApiTests {
 		result.andExpect(status().isCreated());
 		logger.info(result.andReturn().getResponse().getContentAsString());
 		ReleaseDTO response=objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ReleaseDTO.class);
+		releaseId=response.getId();
 		Assertions.assertThat(response.getName()).isEqualTo("July 2023 Major Release");
 	}
 	
@@ -78,7 +81,7 @@ class ReleaseProcessingApiTests {
     @Order(1)
     void modifyChangeType_test() throws Exception {
 		ReleaseDTO releaseDTO=new ReleaseDTO
-				("JULY-2023","July 2023 Minor Release");
+				(releaseId,"JULY-2023","July 2023 Minor Release");
 		ResultActions result=mvc
 		.perform(
 				put(url + "/api/release")
@@ -95,7 +98,7 @@ class ReleaseProcessingApiTests {
     void getChangeType_test() throws Exception {
 		ResultActions result=mvc
 		.perform(
-				get(url + "/api/release/JULY-2023")
+				get(url + "/api/release/" + releaseId)
 				.with(user("admin").password("admin").roles("ADMIN")));
 		result.andExpect(status().isOk());
 		ReleaseDTO response=objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ReleaseDTO.class);
@@ -118,7 +121,7 @@ class ReleaseProcessingApiTests {
     @Order(5)
     void deleteChangeType_test() throws Exception {
 		ReleaseDTO releaseDTO=new ReleaseDTO();
-		releaseDTO.setId("JULY-2023");
+		releaseDTO.setId(releaseId);
 		ResultActions result=mvc
 		.perform(
 				delete(url + "/api/release")

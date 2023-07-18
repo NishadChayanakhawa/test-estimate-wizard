@@ -7,6 +7,7 @@ import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class ReleaseDTO {
-	private String id;
+	private long id;
+	private String identifier;
 	private String name;
 }

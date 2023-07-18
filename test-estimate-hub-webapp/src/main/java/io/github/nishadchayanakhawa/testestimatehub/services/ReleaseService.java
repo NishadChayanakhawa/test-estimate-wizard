@@ -25,7 +25,7 @@ public class ReleaseService {
 							(modelMapper.map(releaseDTO, Release.class)), ReleaseDTO.class);
 	}
 	
-	public ReleaseDTO get(String id) {
+	public ReleaseDTO get(Long id) {
 		return modelMapper.map(releaseRepository.findById(id).orElseThrow(), ReleaseDTO.class);
 	}
 	

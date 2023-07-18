@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import io.github.nishadchayanakhawa.testestimatehub.model.Release;
 
-public interface ReleaseRepository extends JpaRepository<Release,String>{
+public interface ReleaseRepository extends JpaRepository<Release,Long>{
 
 }

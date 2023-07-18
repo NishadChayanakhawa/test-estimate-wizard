@@ -33,7 +33,7 @@ public class ReleaseProcessingApi {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<ReleaseDTO> get(@PathVariable String id) {
+	public ResponseEntity<ReleaseDTO> get(@PathVariable Long id) {
 		return new ResponseEntity<>(releaseService.get(id),HttpStatus.OK); 
 	}
 	
