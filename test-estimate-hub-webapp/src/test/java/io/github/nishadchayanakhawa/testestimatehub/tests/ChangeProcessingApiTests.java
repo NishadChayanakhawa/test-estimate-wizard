@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import java.util.List;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -34,7 +35,7 @@ import io.github.nishadchayanakhawa.testestimatehub.model.dto.RequirementDTO;
 
 @TestMethodOrder(OrderAnnotation.class)
 @SpringBootTest(classes = TestEstimateHubApplication.class,webEnvironment=SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class ChangeProcessingApiTests {
+class ChangeProcessingApiTests {
 private static final Logger logger=LoggerFactory.getLogger(ChangeProcessingApiTests.class);
 	
 	@Value("${server.port}")
@@ -96,7 +97,7 @@ private static final Logger logger=LoggerFactory.getLogger(ChangeProcessingApiTe
 		requirements.add(requirement1);
 		requirements.add(requirement2);
 		ChangeDTO changeDTO=new ChangeDTO
-				(0,"Project-01","First Project","CREATED",null,releaseId,null,null,requirements);
+				(0,"Project-01","First Project","CREATED",null,releaseId,null,null,requirements,LocalDate.now(),LocalDate.now().plusDays(5));
 		logger.info(objectMapper.writeValueAsString(changeDTO));
 		ResultActions result=mvc
 		.perform(

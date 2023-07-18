@@ -1,5 +1,6 @@
 package io.github.nishadchayanakhawa.testestimatehub.model;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -32,4 +33,9 @@ public class Change {
 	private Release release;
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<Requirement> requirements;
+	
+	@Column(name = "start_date", columnDefinition = "DATE")
+	private LocalDate startDate;
+	@Column(name = "end_date", columnDefinition = "DATE")
+	private LocalDate endDate;
 }

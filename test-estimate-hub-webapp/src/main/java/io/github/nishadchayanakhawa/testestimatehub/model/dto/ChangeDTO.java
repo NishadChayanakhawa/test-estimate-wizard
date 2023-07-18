@@ -1,5 +1,6 @@
 package io.github.nishadchayanakhawa.testestimatehub.model.dto;
 
+import java.time.LocalDate;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,4 +18,6 @@ public class ChangeDTO {
 	private String releaseIdentifier;
 	private String releaseName;
 	private List<RequirementDTO> requirements;
+	private LocalDate startDate;
+	private LocalDate endDate;
 }
