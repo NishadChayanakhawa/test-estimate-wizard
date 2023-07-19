@@ -65,15 +65,34 @@
 		</tr>
 	</script>
 	<script id="changeRecordListTemplate" type="text/template"
-		sec:authorize="hasAnyRole('ROLE_AUTOMATION_MANAGER','ROLE_TESTER')">
+		sec:authorize="hasRole('ROLE_TESTER')">
 		<tr>
+			<td>${releaseIdentifier}</td>
 			<td>${identifier}</td>
+			<td>${changeTypeName}</td>
 			<td>${name}</td>
+			<td>${statusDisplayValue}</td>
 			<td>
-				<i class="fa-solid fa-ban"></i> N/A
+				<button class="border-0 bg-transparent text-primary-emphasis" id="estimate_${id}">
+					<i class="fa-solid fa-scale-balanced"></i> Estimate
+				</button>
 			</td>
 		</tr>
 	</script>
+	<script id="changeRecordListTemplate" type="text/template"
+		sec:authorize="hasRole('ROLE_AUTOMATION_MANAGER')">
+		<tr>
+			<td>${releaseIdentifier}</td>
+			<td>${identifier}</td>
+			<td>${changeTypeName}</td>
+			<td>${name}</td>
+			<td>${statusDisplayValue}</td>
+			<td>
+				
+			</td>
+		</tr>
+	</script>
+	
 	<script id="changeRecordListPlaceholder" type="text/template">
 		<tr class="placeholder-glow">
 			<td><span class="placeholder col-6 bg-dark"></span></td>
@@ -222,7 +241,7 @@
 
 	<div class="p-3" id="changeContent">
 		<button class="btn btn-sm btn-primary" id="addChangeRecordButton"
-			sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_TEST_MANAGER')">
+			sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_TEST_MANAGER','ROLE_TEST_LEAD')">
 			<i class="fa fa-plus"></i> Add Change Record
 		</button>
 		<br>
