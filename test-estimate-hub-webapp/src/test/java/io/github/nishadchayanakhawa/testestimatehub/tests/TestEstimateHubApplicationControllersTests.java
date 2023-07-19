@@ -59,7 +59,8 @@ class TestEstimateHubApplicationControllersTests {
 	@ValueSource(strings = {"/home",
 			"/configuration/usermanagement","/configuration/application",
 			"/configuration/changeType","/configuration/testType",
-			"/configuration/general"})
+			"/configuration/general","/estimation/submit",
+			"/record/release","/record/change"})
     void homePage_test(String path) throws Exception {
 		User user=userService.findByUsername("admin");
     			mvc
