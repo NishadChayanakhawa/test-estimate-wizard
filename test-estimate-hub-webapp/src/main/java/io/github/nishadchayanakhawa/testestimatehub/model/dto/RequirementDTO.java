@@ -2,6 +2,9 @@ package io.github.nishadchayanakhawa.testestimatehub.model.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Setter;
 
@@ -12,4 +15,5 @@ public class RequirementDTO {
 	private String description;
 	private String complexityCode;
 	private String complexityDisplayValue;
+	private List<UseCaseDTO> useCases;
 }

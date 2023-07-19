@@ -1,29 +1,25 @@
 package io.github.nishadchayanakhawa.testestimatehub.model;
 
-import java.util.List;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter @Setter @NoArgsConstructor
-public class Requirement {
+public class UseCase {
 	@Id
 	@GeneratedValue
 	private long id;
-	private String identifier;
 	private String description;
 	@Enumerated(EnumType.STRING)
-	private Complexity complexity;
-	
-	@OneToMany(cascade=CascadeType.ALL)
-	List<UseCase> useCases;
+	private Complexity testDataComplexity;
+	@Enumerated(EnumType.STRING)
+	private Complexity testConfigurationComplexity;
+	@Enumerated(EnumType.STRING)
+	private Complexity testValidationComplexity;
 }

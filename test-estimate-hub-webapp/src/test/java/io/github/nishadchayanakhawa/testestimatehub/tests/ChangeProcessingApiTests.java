@@ -32,6 +32,7 @@ import io.github.nishadchayanakhawa.testestimatehub.TestEstimateHubApplication;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.ChangeDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.ReleaseDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.RequirementDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.UseCaseDTO;
 
 @TestMethodOrder(OrderAnnotation.class)
 @SpringBootTest(classes = TestEstimateHubApplication.class,webEnvironment=SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -91,9 +92,9 @@ private static final Logger logger=LoggerFactory.getLogger(ChangeProcessingApiTe
     void addChangeType_test() throws Exception {
 		List<RequirementDTO> requirements=new ArrayList<>();
 		RequirementDTO requirement1=new RequirementDTO
-				(0,"BN01","Define first requirment","LOW",null);
+				(0,"BN01","Define first requirment","LOW",null,null);
 		RequirementDTO requirement2=new RequirementDTO
-				(0,"BN02","Define second requirment","HIGH",null);
+				(0,"BN02","Define second requirment","HIGH",null,null);
 		requirements.add(requirement1);
 		requirements.add(requirement2);
 		ChangeDTO changeDTO=new ChangeDTO
@@ -143,13 +144,17 @@ private static final Logger logger=LoggerFactory.getLogger(ChangeProcessingApiTe
     void updateChangeType_test() throws Exception {
 		List<RequirementDTO> requirements=created.getRequirements();
 		RequirementDTO requirement3=new RequirementDTO
-				(0,"BN03","Add third requirment","VERY_LOW",null);
+				(0,"BN03","Add third requirment","VERY_LOW",null,null);
+		List<UseCaseDTO> useCases=new ArrayList<>();
+		UseCaseDTO useCase1=new UseCaseDTO(0L,"FirstUseCase","LOW",null,"LOW",null,"LOW",null);
+		UseCaseDTO useCase2=new UseCaseDTO(0L,"SecondUseCase","LOW",null,"LOW",null,"LOW",null);
+		useCases.add(useCase1);
+		useCases.add(useCase2);
 		RequirementDTO requirement4=new RequirementDTO
-				(0,"BN04","Add fourth requirment","VERY_HIGH",null);
+				(0,"BN04","Add fourth requirment","VERY_HIGH",null,useCases);
 		requirements.add(requirement3);
 		requirements.add(requirement4);
 		created.setRequirements(requirements);
-		
 		logger.info(objectMapper.writeValueAsString(created));
 		ResultActions result=mvc
 		.perform(
