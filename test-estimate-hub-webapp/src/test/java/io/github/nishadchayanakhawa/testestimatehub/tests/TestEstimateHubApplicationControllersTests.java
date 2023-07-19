@@ -60,7 +60,7 @@ class TestEstimateHubApplicationControllersTests {
 			"/configuration/usermanagement","/configuration/application",
 			"/configuration/changeType","/configuration/testType",
 			"/configuration/general","/estimation/submit",
-			"/record/release"})
+			"/record/release","/record/change"})
     void homePage_test(String path) throws Exception {
 		User user=userService.findByUsername("admin");
     			mvc

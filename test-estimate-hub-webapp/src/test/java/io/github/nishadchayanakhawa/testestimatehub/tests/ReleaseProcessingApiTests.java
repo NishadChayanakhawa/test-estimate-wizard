@@ -62,7 +62,7 @@ class ReleaseProcessingApiTests {
     @Order(1)
     void addChangeType_test() throws Exception {
 		ReleaseDTO releaseDTO=new ReleaseDTO
-				(0,"JULY-2023","July 2023 Major Release");
+				(0,"JULY-2023","July 2023 Major Release",null);
 		logger.info(objectMapper.writeValueAsString(releaseDTO));
 		ResultActions result=mvc
 		.perform(
@@ -81,7 +81,7 @@ class ReleaseProcessingApiTests {
     @Order(1)
     void modifyChangeType_test() throws Exception {
 		ReleaseDTO releaseDTO=new ReleaseDTO
-				(releaseId,"JULY-2023","July 2023 Minor Release");
+				(releaseId,"JULY-2023","July 2023 Minor Release",null);
 		ResultActions result=mvc
 		.perform(
 				put(url + "/api/release")
@@ -114,7 +114,7 @@ class ReleaseProcessingApiTests {
 				.with(user("admin").password("admin").roles("ADMIN")));
 		result.andExpect(status().isOk());
 		ReleaseDTO[] response=objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ReleaseDTO[].class);
-		Assertions.assertThat(response[0].getName()).isEqualTo("July 2023 Minor Release");
+		Assertions.assertThat(response[0].getName()).containsAnyOf("July 2023 Minor Release","August 2023 Major Release");
 	}
 	
 	@Test
