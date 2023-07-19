@@ -6,11 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.GeneralConfigurationDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.ChangeDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.ChangeTypeConfigurationDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.ReleaseDTO;
 import io.github.nishadchayanakhawa.testestimatehub.services.GeneralConfigurationService;
 import io.github.nishadchayanakhawa.testestimatehub.services.ChangeTypeConfigurationService;
+import io.github.nishadchayanakhawa.testestimatehub.services.ChangeService;
 import io.github.nishadchayanakhawa.testestimatehub.services.ReleaseService;
 
 @Controller
@@ -20,6 +24,9 @@ public class TestEstimateHubApplicationControllers {
 	
 	@Autowired
 	private ChangeTypeConfigurationService changeTypeConfigurationService;
+	
+	@Autowired
+	private ChangeService changeService;
 	
 	@Autowired
 	private ReleaseService releaseService;
@@ -77,10 +84,10 @@ public class TestEstimateHubApplicationControllers {
 		return "configuration/general";
 	}
 	
-	@GetMapping("/estimation/submit")
-	public String getSubmitEstimationPage(Model model) {
-		List<ChangeTypeConfigurationDTO> changeTypeConfigurationsDTO=changeTypeConfigurationService.getAll();
-		model.addAttribute("changeTypes", changeTypeConfigurationsDTO);
-		return "estimation/submit";
+	@GetMapping("/estimation/estimate/{id}")
+	public String getSubmitEstimationPage(@PathVariable Long id,Model model) {
+		ChangeDTO change=changeService.get(id);
+		model.addAttribute("change", change);
+		return "estimation/estimate";
 	}
 }
