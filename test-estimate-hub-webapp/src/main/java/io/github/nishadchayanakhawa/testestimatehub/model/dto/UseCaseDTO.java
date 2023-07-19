@@ -7,6 +7,8 @@ import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class UseCaseDTO {
+	private long changeId;
+	private long requirementId;
 	private long id;
 	private String description;
 	private String testDataComplexityCode;

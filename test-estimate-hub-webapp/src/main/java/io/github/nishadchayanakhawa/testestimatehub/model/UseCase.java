@@ -5,6 +5,8 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,4 +24,12 @@ public class UseCase {
 	private Complexity testConfigurationComplexity;
 	@Enumerated(EnumType.STRING)
 	private Complexity testValidationComplexity;
+	
+	@ManyToOne
+	@JoinColumn(name="requirement_id", nullable=false)
+	Requirement requirement;
+	
+	@ManyToOne
+	@JoinColumn(name="change_id", nullable=false)
+	Change change;
 }

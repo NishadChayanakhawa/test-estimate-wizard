@@ -24,6 +24,6 @@ public class Requirement {
 	@Enumerated(EnumType.STRING)
 	private Complexity complexity;
 	
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(cascade=CascadeType.ALL,mappedBy="requirement")
 	List<UseCase> useCases;
 }

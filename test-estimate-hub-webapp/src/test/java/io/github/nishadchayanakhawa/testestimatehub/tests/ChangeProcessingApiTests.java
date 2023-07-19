@@ -2,6 +2,7 @@ package io.github.nishadchayanakhawa.testestimatehub.tests;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,14 +31,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.github.nishadchayanakhawa.testestimatehub.TestEstimateHubApplication;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.ChangeDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.UseCaseDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.ReleaseDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.RequirementDTO;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.UseCaseDTO;
 
 @TestMethodOrder(OrderAnnotation.class)
 @SpringBootTest(classes = TestEstimateHubApplication.class,webEnvironment=SpringBootTest.WebEnvironment.DEFINED_PORT)
 class ChangeProcessingApiTests {
-private static final Logger logger=LoggerFactory.getLogger(ChangeProcessingApiTests.class);
+	private static final Logger logger=LoggerFactory.getLogger(ChangeProcessingApiTests.class);
 	
 	@Value("${server.port}")
 	private int serverPort;
@@ -145,13 +146,8 @@ private static final Logger logger=LoggerFactory.getLogger(ChangeProcessingApiTe
 		List<RequirementDTO> requirements=created.getRequirements();
 		RequirementDTO requirement3=new RequirementDTO
 				(0,"BN03","Add third requirment","VERY_LOW",null,null);
-		List<UseCaseDTO> useCases=new ArrayList<>();
-		UseCaseDTO useCase1=new UseCaseDTO(0L,"FirstUseCase","LOW",null,"LOW",null,"LOW",null);
-		UseCaseDTO useCase2=new UseCaseDTO(0L,"SecondUseCase","LOW",null,"LOW",null,"LOW",null);
-		useCases.add(useCase1);
-		useCases.add(useCase2);
 		RequirementDTO requirement4=new RequirementDTO
-				(0,"BN04","Add fourth requirment","VERY_HIGH",null,useCases);
+				(0,"BN04","Add fourth requirment","VERY_HIGH",null,null);
 		requirements.add(requirement3);
 		requirements.add(requirement4);
 		created.setRequirements(requirements);
@@ -171,6 +167,37 @@ private static final Logger logger=LoggerFactory.getLogger(ChangeProcessingApiTe
 	
 	@Test
     @Order(5)
+    void getChangeTypeAgain_test() throws Exception {
+		ResultActions result=mvc
+		.perform(
+				get(url + "/api/change/" + changeId)
+				.with(user("admin").password("admin").roles("ADMIN")));
+		result.andExpect(status().isOk());
+		logger.info(result.andReturn().getResponse().getContentAsString());
+		created=objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ChangeDTO.class);
+		Assertions.assertThat(created.getName()).isEqualTo("First Project");
+	}
+	
+	@Test
+    @Order(4)
+    void getEstimate_test() throws Exception {
+		List<UseCaseDTO> useCases=new ArrayList<>(); 
+		UseCaseDTO useCase1=new UseCaseDTO(created.getId(),created.getRequirements().get(0).getId(),0L,"#1Use Case1","LOW",null,"LOW",null,"LOW",null);
+		UseCaseDTO useCase2=new UseCaseDTO(created.getId(),created.getRequirements().get(1).getId(),0L,"#2Use Case1","LOW",null,"LOW",null,"LOW",null);
+		useCases.add(useCase1);
+		useCases.add(useCase2);
+		
+		ResultActions result=mvc
+		.perform(
+				post(url + "/api/useCase")
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.content(objectMapper.writeValueAsString(useCases))
+				.with(user("admin").password("admin").roles("ADMIN")));
+		result.andExpect(status().isOk());
+	}
+	
+	@Test
+    @Order(7)
     void getRelease_test() throws Exception {
 		ResultActions result=mvc
 		.perform(
@@ -183,7 +210,7 @@ private static final Logger logger=LoggerFactory.getLogger(ChangeProcessingApiTe
 	}
 	
 	@Test
-    @Order(6)
+    @Order(8)
     void deleteChangeType_test() throws Exception {
 		ChangeDTO request=new ChangeDTO();
 		request.setId(changeId);
