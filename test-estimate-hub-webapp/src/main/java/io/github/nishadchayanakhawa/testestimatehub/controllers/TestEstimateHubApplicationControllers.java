@@ -8,8 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.GeneralConfigurationDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.ChangeTypeConfigurationDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.ReleaseDTO;
 import io.github.nishadchayanakhawa.testestimatehub.services.GeneralConfigurationService;
 import io.github.nishadchayanakhawa.testestimatehub.services.ChangeTypeConfigurationService;
+import io.github.nishadchayanakhawa.testestimatehub.services.ReleaseService;
 
 @Controller
 public class TestEstimateHubApplicationControllers {
@@ -18,6 +20,9 @@ public class TestEstimateHubApplicationControllers {
 	
 	@Autowired
 	private ChangeTypeConfigurationService changeTypeConfigurationService;
+	
+	@Autowired
+	private ReleaseService releaseService;
 	
 	@GetMapping("/login")
 	public String getLoginPage() {
@@ -54,6 +59,16 @@ public class TestEstimateHubApplicationControllers {
 		return "record/release";
 	}
 	
+	@GetMapping("/record/change")
+	public String getChangeManagementPage(Model model) {
+		List<ChangeTypeConfigurationDTO> changeTypes=changeTypeConfigurationService.getAll();
+		model.addAttribute("changeTypes", changeTypes);
+		
+		List<ReleaseDTO> releases=releaseService.getAll();
+		model.addAttribute("releases", releases);
+		
+		return "record/change";
+	}
 	
 	@GetMapping("/configuration/general")
 	public String getGeneralConfigurationPage(Model model) {

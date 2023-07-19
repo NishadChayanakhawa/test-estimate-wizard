@@ -20,4 +20,6 @@ public class ChangeDTO {
 	private List<RequirementDTO> requirements;
 	private LocalDate startDate;
 	private LocalDate endDate;
+	private Long changeTypeId;
+	private String changeTypeName;
 }

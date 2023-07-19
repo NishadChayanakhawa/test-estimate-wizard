@@ -38,4 +38,7 @@ public class Change {
 	private LocalDate startDate;
 	@Column(name = "end_date", columnDefinition = "DATE")
 	private LocalDate endDate;
+	
+	@ManyToOne
+	ChangeTypeConfiguration changeType;
 }

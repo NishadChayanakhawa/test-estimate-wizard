@@ -97,7 +97,7 @@ private static final Logger logger=LoggerFactory.getLogger(ChangeProcessingApiTe
 		requirements.add(requirement1);
 		requirements.add(requirement2);
 		ChangeDTO changeDTO=new ChangeDTO
-				(0,"Project-01","First Project","CREATED",null,releaseId,null,null,requirements,LocalDate.now(),LocalDate.now().plusDays(5));
+				(0,"Project-01","First Project","CREATED",null,releaseId,null,null,requirements,LocalDate.now(),LocalDate.now().plusDays(5),1L,null);
 		logger.info(objectMapper.writeValueAsString(changeDTO));
 		ResultActions result=mvc
 		.perform(
