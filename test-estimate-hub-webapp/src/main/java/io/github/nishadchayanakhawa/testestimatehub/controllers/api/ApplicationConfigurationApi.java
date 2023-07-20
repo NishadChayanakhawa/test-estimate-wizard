@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,9 +24,9 @@ public class ApplicationConfigurationApi {
 		return new ResponseEntity<>(applicationConfigurationService.getAll(),HttpStatus.OK);
 	}
 	
-	@PostMapping
-	public ResponseEntity<ApplicationConfigurationDTO> getApplicationConfiguration(@RequestBody ApplicationConfigurationDTO applicationConfigurationDTO) {
-		return new ResponseEntity<>(applicationConfigurationService.get(applicationConfigurationDTO),HttpStatus.OK);
+	@GetMapping("/{id}")
+	public ResponseEntity<ApplicationConfigurationDTO> getApplicationConfiguration(@PathVariable Long id) {
+		return new ResponseEntity<>(applicationConfigurationService.get(id),HttpStatus.OK);
 	}
 	
 	@DeleteMapping

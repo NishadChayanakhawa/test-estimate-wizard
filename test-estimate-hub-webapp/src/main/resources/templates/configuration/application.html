@@ -28,10 +28,10 @@
 				${complexityDisplayValue}
 			</td>
 			<td>
-				<button class="border-0 bg-transparent" id="editApplicationConfiguration_${applicationName}_${moduleName}_${subModuleName}">
+				<button class="border-0 bg-transparent" id="editApplicationConfiguration_${id}">
 					<i class="fa fa-edit"></i> Edit
 				</button>
-				<button class="border-0 bg-transparent text-danger" id="deleteApplicationConfiguration_${applicationName}_${moduleName}_${subModuleName}">
+				<button class="border-0 bg-transparent text-danger" id="deleteApplicationConfiguration_${id}">
 					<i class="fa fa-trash"></i> Delete
 				</button>
 			</td>
@@ -82,9 +82,7 @@
 				</div>
 				<div class="modal-body">
 					<form id="deleteApplicationConfigurationDeleteForm">
-						<input type="hidden" class="form-control" id="deleteAction_application" name="applicationName" required />
-						<input type="hidden" class="form-control" id="deleteAction_module" name="moduleName" required />
-						<input type="hidden" class="form-control" id="deleteAction_subModule" name="subModuleName" required />
+						<input type="hidden" class="form-control" id="deleteAction_id" name="id" required />
 						Confirm delete operation <span id="usernameDisplay"></span>
 						<hr>
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -104,6 +102,7 @@
 				</div>
 				<div class="modal-body">
 					<form id="saveApplicationConfigurationForm" autocomplete="off">
+						<input type="hidden" class="form-control" id="id" name="id" required />
 						<div class="form-floating mb-3">
 							<input type="text" class="form-control" id="application" name="applicationName" required />
 							<label for="applicationName">Application</label>
