@@ -17,4 +17,6 @@ public class UseCaseDTO {
 	private String testConfigurationComplexityDisplayValue;
 	private String testValidationComplexityCode;
 	private String testValidationComplexityDisplayValue;
+	private double dataVariationCount;
+	private Long applicationConfigurationId;
 }

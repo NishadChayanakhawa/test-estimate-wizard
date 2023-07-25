@@ -25,6 +25,8 @@ public class UseCase {
 	@Enumerated(EnumType.STRING)
 	private Complexity testValidationComplexity;
 	
+	private double dataVariationCount;
+	
 	@ManyToOne
 	@JoinColumn(name="requirement_id", nullable=false)
 	Requirement requirement;
@@ -32,4 +34,8 @@ public class UseCase {
 	@ManyToOne
 	@JoinColumn(name="change_id", nullable=false)
 	Change change;
+	
+	@ManyToOne
+	@JoinColumn(name="applicationconfiguration_id", nullable=false)
+	ApplicationConfiguration applicationConfiguration;
 }

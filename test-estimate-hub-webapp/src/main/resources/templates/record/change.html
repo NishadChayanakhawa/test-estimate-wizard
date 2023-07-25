@@ -58,9 +58,15 @@
 				<button class="border-0 bg-transparent text-danger" id="deleteChange_${id}">
 					<i class="fa fa-trash"></i> Delete
 				</button>
+				{%if statusCode=='CREATED'%}
 				<a class="link-primary-emphasis link-underline link-underline-opacity-0" id="estimate_${id}" th:href="@{/estimation/estimate/${id}}">
 					<i class="fa-solid fa-scale-balanced"></i> Estimate
 				</a>
+				{%else statusCode=='ESTIMATED'%}
+				<a class="link-primary-emphasis link-underline link-underline-opacity-0" id="estimate_${id}" th:href="@{/estimation/estimate/${id}}">
+					<i class="fa-solid fa-scale-balanced"></i> Review Estimate
+				</a>
+				{%/if%}
 			</td>
 		</tr>
 	</script>

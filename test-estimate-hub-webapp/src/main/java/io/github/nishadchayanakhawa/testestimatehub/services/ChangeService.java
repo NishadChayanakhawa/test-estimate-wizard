@@ -1,22 +1,36 @@
 package io.github.nishadchayanakhawa.testestimatehub.services;
 
 import java.util.List;
-
+import java.util.ArrayList;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.github.nishadchayanakhawa.testestimatehub.jparepositories.ChangeRepository;
-import io.github.nishadchayanakhawa.testestimatehub.model.Change;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.ChangeDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.github.nishadchayanakhawa.testestimatehub.jparepositories.ChangeRepository;
+import io.github.nishadchayanakhawa.testestimatehub.jparepositories.UseCaseRepository;
+import io.github.nishadchayanakhawa.testestimatehub.model.Change;
+import io.github.nishadchayanakhawa.testestimatehub.model.UseCase;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.ChangeDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.RequirementDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.UseCaseDTO;
+import java.util.Map;
+import java.util.HashMap;
 @Service
 public class ChangeService {
 	@Autowired
 	private ChangeRepository changeRepository;
 	
 	@Autowired
+	private UseCaseRepository useCaseRepository;
+	
+	@Autowired
 	ModelMapper modelMapper;
+	
+	@Autowired
+	ObjectMapper objectMapper;
 	
 	public ChangeDTO addOrUpdate(ChangeDTO changeDTO) {
 		return 
@@ -41,5 +55,71 @@ public class ChangeService {
 	
 	public boolean exists(ChangeDTO changeDTO) {
 		return changeRepository.existsById(changeDTO.getId());
+	}
+	
+	public ChangeDTO saveUseCases(List<UseCaseDTO> useCasesDTO) throws JsonProcessingException {
+		return saveUseCases(useCasesDTO,false);
+	}
+	
+	public ChangeDTO submitEstimationForReview(List<UseCaseDTO> useCasesDTO) throws JsonProcessingException {
+		return saveUseCases(useCasesDTO,true);
+	}
+	
+	private ChangeDTO saveUseCases(List<UseCaseDTO> useCasesDTO,boolean isSubmittedForReview) throws JsonProcessingException {
+		if(useCasesDTO.isEmpty()) {
+			return null;
+		}
+		
+		List<UseCaseDTO> enrichedUseCasesDTO=useCasesDTO.stream()
+				.map(u -> modelMapper.map(modelMapper.map(u, UseCase.class), UseCaseDTO.class))
+				.toList();
+		
+		ChangeDTO change=get(enrichedUseCasesDTO.get(0).getChangeId());
+		
+		Map<Long,List<UseCaseDTO>> useCaseByRequirementMap=new HashMap<>();
+		List<Long> validUseCaseIdList=new ArrayList<>();
+		
+		for(UseCaseDTO useCaseDTO : enrichedUseCasesDTO) {
+			if(useCaseDTO.getId()>0) {
+				validUseCaseIdList.add(useCaseDTO.getId());
+			}
+			if(!useCaseByRequirementMap.containsKey(useCaseDTO.getRequirementId())) {
+				useCaseByRequirementMap.put(useCaseDTO.getRequirementId(), new ArrayList<>());
+			}
+			useCaseByRequirementMap.get(useCaseDTO.getRequirementId()).add(useCaseDTO);
+		}
+		
+		System.out.println("***");
+		System.out.println(objectMapper.writeValueAsString(change));
+		
+		List<Long> invalidUseCaseIdList=new ArrayList<>();
+		for(RequirementDTO requirementDTO : change.getRequirements()) {
+			for(UseCaseDTO useCaseDTO : requirementDTO.getUseCases()) {
+				if(!validUseCaseIdList.contains(useCaseDTO.getId())) {
+					invalidUseCaseIdList.add(useCaseDTO.getId());
+				}
+			}
+		}
+		System.out.println("###Deleted : ");
+		System.out.println(invalidUseCaseIdList.toString());
+		for(int iRequirementCounter=0;iRequirementCounter<change.getRequirements().size();iRequirementCounter++) {
+			change.getRequirements().get(iRequirementCounter)
+				.setUseCases(useCaseByRequirementMap.get(change.getRequirements().get(iRequirementCounter).getId()));
+		}
+		
+		if(isSubmittedForReview) {
+			change.setStatusCode("ESTIMATED");
+		}
+		
+		ChangeDTO updatedChange=modelMapper.map(changeRepository.save(modelMapper.map(change, Change.class)), ChangeDTO.class);
+		System.out.println("---");
+		System.out.println(objectMapper.writeValueAsString(updatedChange));
+		System.out.println("_________");
+		
+		for(Long deletedId : invalidUseCaseIdList) {
+			useCaseRepository.deleteById(deletedId);
+		}
+		
+		return updatedChange;
 	}
 }

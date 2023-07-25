@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.github.nishadchayanakhawa.testestimatehub.TestEstimateHubApplication;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.ApplicationConfigurationDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.ChangeDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.UseCaseDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.ReleaseDTO;
@@ -48,6 +49,7 @@ class ChangeProcessingApiTests {
 	private static Long releaseId;
 	private static Long changeId;
 	private static ChangeDTO created;
+	private static Long appConfigId;
 	
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -68,6 +70,23 @@ class ChangeProcessingApiTests {
         url=String.format("http://localhost:%d", serverPort);
         ChangeProcessingApiTests.logger.info("{}",url);
     }
+	
+	@Test
+    @Order(1)
+    void addApplicationConfig_test() throws Exception {
+		ApplicationConfigurationDTO applicationConfigurationDTO=new ApplicationConfigurationDTO
+				(0L,"App1","Module1","SubModule1",3.4,"MEDIUM",null);
+		logger.info(objectMapper.writeValueAsString(applicationConfigurationDTO));
+		ResultActions result=mvc
+		.perform(
+				put(url + "/api/config/application")
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.content(objectMapper.writeValueAsString(applicationConfigurationDTO))
+				.with(user("admin").password("admin").roles("ADMIN")));
+		result.andExpect(status().isCreated()).andReturn();
+		ApplicationConfigurationDTO response=objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ApplicationConfigurationDTO.class);
+		appConfigId=response.getId();
+	}
 	
 	@Test
     @Order(1)
@@ -182,8 +201,26 @@ class ChangeProcessingApiTests {
     @Order(4)
     void getEstimate_test() throws Exception {
 		List<UseCaseDTO> useCases=new ArrayList<>(); 
-		UseCaseDTO useCase1=new UseCaseDTO(created.getId(),created.getRequirements().get(0).getId(),0L,"#1Use Case1","LOW",null,"LOW",null,"LOW",null);
-		UseCaseDTO useCase2=new UseCaseDTO(created.getId(),created.getRequirements().get(1).getId(),0L,"#2Use Case1","LOW",null,"LOW",null,"LOW",null);
+		UseCaseDTO useCase1=new UseCaseDTO(created.getId(),created.getRequirements().get(0).getId(),0L,"#1Use Case1","LOW",null,"LOW",null,"LOW",null,1.5,appConfigId);
+		UseCaseDTO useCase2=new UseCaseDTO(created.getId(),created.getRequirements().get(1).getId(),0L,"#2Use Case1","LOW",null,"LOW",null,"LOW",null,3.0,appConfigId);
+		useCases.add(useCase1);
+		useCases.add(useCase2);
+		
+		ResultActions result=mvc
+		.perform(
+				put(url + "/api/useCase")
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.content(objectMapper.writeValueAsString(useCases))
+				.with(user("admin").password("admin").roles("ADMIN")));
+		result.andExpect(status().isOk());
+	}
+	
+	@Test
+    @Order(6)
+    void submitEstimate_test() throws Exception {
+		List<UseCaseDTO> useCases=new ArrayList<>(); 
+		UseCaseDTO useCase1=new UseCaseDTO(created.getId(),created.getRequirements().get(0).getId(),0L,"#1Use Case1","LOW",null,"LOW",null,"LOW",null,1.5,appConfigId);
+		UseCaseDTO useCase2=new UseCaseDTO(created.getId(),created.getRequirements().get(1).getId(),0L,"#2Use Case1","LOW",null,"LOW",null,"LOW",null,3.0,appConfigId);
 		useCases.add(useCase1);
 		useCases.add(useCase2);
 		

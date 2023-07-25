@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.GeneralConfigurationDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.ChangeDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.ChangeTypeConfigurationDTO;
@@ -85,7 +85,7 @@ public class TestEstimateHubApplicationControllers {
 	}
 	
 	@GetMapping("/estimation/estimate/{id}")
-	public String getSubmitEstimationPage(@PathVariable Long id,Model model) {
+	public String getSubmitEstimationPage(@PathVariable Long id,Model model) throws JsonProcessingException {
 		ChangeDTO change=changeService.get(id);
 		model.addAttribute("change", change);
 		return "estimation/estimate";

@@ -1,6 +1,6 @@
 $.fn.validate = function() {
 	var requiredValidationResult = true;
-	var requiredInputs = $(this).find("input:required");
+	var requiredInputs = $(this).find("input:required,select:required");
 	requiredInputs.each(function() {
 		if ($(this).val().trim() == '') {
 			requiredValidationResult = false;
