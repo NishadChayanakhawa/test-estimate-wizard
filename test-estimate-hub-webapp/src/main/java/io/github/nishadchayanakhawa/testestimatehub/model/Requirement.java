@@ -1,10 +1,14 @@
 package io.github.nishadchayanakhawa.testestimatehub.model;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,4 +23,7 @@ public class Requirement {
 	private String description;
 	@Enumerated(EnumType.STRING)
 	private Complexity complexity;
+	
+	@OneToMany(cascade=CascadeType.ALL,mappedBy="requirement")
+	List<UseCase> useCases;
 }

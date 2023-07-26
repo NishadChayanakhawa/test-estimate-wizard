@@ -21,16 +21,13 @@ var applicationConfigurationProcessing = (function() {
 	var showDeleteModal=function(event) {
 		event.preventDefault();
 		var deleteButtonId=$(this).attr("id");
-		var applicationConfigurationId=getApplicationConfigurationId(deleteButtonId);
-		apiHandling.processRequest("post", "/api/config/application", csrfToken, applicationConfigurationId)
+		apiHandling.processRequest("get", "/api/config/application/" + deleteButtonId.split("_")[1], csrfToken, null)
 			.done(data => showDeleteModal_success(data))
 			.catch(error => console.debug(error));
 	};
 	
 	var showDeleteModal_success=function(applicationConfigurationRecord) {
-		$("input#deleteAction_application").val(applicationConfigurationRecord.applicationName);
-		$("input#deleteAction_module").val(applicationConfigurationRecord.moduleName);
-		$("input#deleteAction_subModule").val(applicationConfigurationRecord.subModuleName);
+		$("input#deleteAction_id").val(applicationConfigurationRecord.id);
 		$(xpaths["deleteUserConfirmationModal"]).modal("show");
 	};
 	
@@ -84,42 +81,45 @@ var applicationConfigurationProcessing = (function() {
 	var saveApplicationConfiguration=function(event) {
 		event.preventDefault();
 		if($(xpaths["saveApplicationConfigurationForm"]).validate()) {
-			$(xpaths["addOrEditApplicationConfigurationRecordModal"]).modal("hide");
+			$(xpaths["addOrEditApplicationConfigurationRecordModal"]).block({ message: '<h5><i class="fa-solid fa-spinner fa-spin"></i> Adding/updating record...</h5>' });
 			$(xpaths["applicationConfigurationContent"]).block({ message: '<h5><i class="fa-solid fa-spinner fa-spin"></i> Adding/updating record...</h5>' });
 			var saveApplicationConfigurationData=$(xpaths["saveApplicationConfigurationForm"]).serializeObject();
 			console.debug(saveApplicationConfigurationData);
 			apiHandling.processRequest("put", "/api/config/application", csrfToken, saveApplicationConfigurationData)
 				.done(data => saveApplicationConfiguration_success(data))
-				.catch(error => console.debug(error));
+				.catch(error => saveApplicationConfiguration_error(error,saveApplicationConfigurationData));
 		}
 	};
 	
 	var saveApplicationConfiguration_success=function(applicationConfiguration) {
 		console.debug(applicationConfiguration);
 		toastr.success("Application Configuration record saved.");
+		$(xpaths["addOrEditApplicationConfigurationRecordModal"]).unblock();
+		$(xpaths["addOrEditApplicationConfigurationRecordModal"]).modal("hide");
 		$(xpaths["saveApplicationConfigurationForm"])[0].reset();
 		getApplicationConfigurationList();
 	};
 	
+	var saveApplicationConfiguration_error=function(error,saveApplicationConfigurationData) {
+		$(xpaths["addOrEditApplicationConfigurationRecordModal"]).unblock();
+		$(xpaths["applicationConfigurationContent"]).unblock();
+		toastr.error("Configuration for '" + saveApplicationConfigurationData.applicationName + 
+		'-' + saveApplicationConfigurationData.moduleName + '-' + saveApplicationConfigurationData.subModuleName + "' already exists.");
+	}
+	
 	var showEditModal=function(event) {
 		event.preventDefault();
 		var editButtonId=$(this).attr("id");
-		var applicationConfigurationId=getApplicationConfigurationId(editButtonId);
-		apiHandling.processRequest("post", "/api/config/application", csrfToken, applicationConfigurationId)
+		apiHandling.processRequest("get", "/api/config/application/" + editButtonId.split("_")[1], csrfToken, null)
 			.done(data => showEditModal_success(data))
 			.catch(error => console.debug(error));
 	};
 	
 	var showEditModal_success=function(applicationConfigurationRecord) {
+		$("input#id").val(applicationConfigurationRecord.id);
 		$("input#application").val(applicationConfigurationRecord.applicationName);
-		$("input#application").attr("disabled",true);
-		$("input#application").attr("readOnly",true);
 		$("input#module").val(applicationConfigurationRecord.moduleName);
-		$("input#module").attr("disabled",true);
-		$("input#module").attr("readOnly",true);
 		$("input#subModule").val(applicationConfigurationRecord.subModuleName);
-		$("input#subModule").attr("disabled",true);
-		$("input#subModule").attr("readOnly",true);
 		$("input#baseTestCaseCountFactor").val(applicationConfigurationRecord.baseTestCaseCountFactor);
 		$("input#complexity_" + applicationConfigurationRecord.complexityCode).attr("checked",true);
 		$(xpaths["addOrEditApplicationConfigurationRecordModal"]).modal("show");
