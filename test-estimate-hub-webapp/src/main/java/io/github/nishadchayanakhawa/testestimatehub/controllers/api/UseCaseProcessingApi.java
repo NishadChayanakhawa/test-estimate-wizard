@@ -25,25 +25,6 @@ public class UseCaseProcessingApi {
 	@Autowired
 	ModelMapper modelMapper;
 	
-//	@PostMapping
-//	public ResponseEntity<String> addOrUpdate(@RequestBody List<UseCaseDTO> useCasesDTO) throws JsonProcessingException {
-//		List<UseCaseDTO> enrichedUseCasesDTO=useCasesDTO.stream()
-//				.map(u -> modelMapper.map(modelMapper.map(u, UseCase.class), UseCaseDTO.class))
-//				.toList();
-//		
-//		logger.info("CHANGE: {}",useCasesDTO.get(0).getChangeId());
-//		ChangeDTO change=changeService.get(enrichedUseCasesDTO.get(0).getChangeId());
-//		for(UseCaseDTO useCaseDTO : enrichedUseCasesDTO) {
-//			for(int iRequirement=0;iRequirement<change.getRequirements().size();iRequirement++) {
-//				if(change.getRequirements().get(iRequirement).getId()==useCaseDTO.getRequirementId()) {
-//					change.getRequirements().get(iRequirement).addUseCase(useCaseDTO);
-//				}
-//			}
-//		}
-//		logger.info("******Use case added change: {}",objectMapper.writeValueAsString(change));
-//		return new ResponseEntity<>(HttpStatus.OK); 
-//	}
-	
 	@PutMapping
 	public ResponseEntity<ChangeDTO> addOrUpdate(@RequestBody List<UseCaseDTO> useCasesDTO) throws JsonProcessingException {
 		return new ResponseEntity<>(changeService.saveUseCases(useCasesDTO),HttpStatus.OK);

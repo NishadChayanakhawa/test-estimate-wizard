@@ -89,9 +89,6 @@ public class ChangeService {
 			useCaseByRequirementMap.get(useCaseDTO.getRequirementId()).add(useCaseDTO);
 		}
 		
-		System.out.println("***");
-		System.out.println(objectMapper.writeValueAsString(change));
-		
 		List<Long> invalidUseCaseIdList=new ArrayList<>();
 		for(RequirementDTO requirementDTO : change.getRequirements()) {
 			for(UseCaseDTO useCaseDTO : requirementDTO.getUseCases()) {
@@ -100,8 +97,6 @@ public class ChangeService {
 				}
 			}
 		}
-		System.out.println("###Deleted : ");
-		System.out.println(invalidUseCaseIdList.toString());
 		for(int iRequirementCounter=0;iRequirementCounter<change.getRequirements().size();iRequirementCounter++) {
 			change.getRequirements().get(iRequirementCounter)
 				.setUseCases(useCaseByRequirementMap.get(change.getRequirements().get(iRequirementCounter).getId()));
@@ -110,11 +105,7 @@ public class ChangeService {
 		if(isSubmittedForReview) {
 			change.setStatusCode("ESTIMATED");
 		}
-		
 		ChangeDTO updatedChange=modelMapper.map(changeRepository.save(modelMapper.map(change, Change.class)), ChangeDTO.class);
-		System.out.println("---");
-		System.out.println(objectMapper.writeValueAsString(updatedChange));
-		System.out.println("_________");
 		
 		for(Long deletedId : invalidUseCaseIdList) {
 			useCaseRepository.deleteById(deletedId);

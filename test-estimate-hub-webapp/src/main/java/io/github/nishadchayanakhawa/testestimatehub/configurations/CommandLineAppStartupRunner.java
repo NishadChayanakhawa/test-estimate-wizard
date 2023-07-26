@@ -9,27 +9,15 @@ import io.github.nishadchayanakhawa.testestimatehub.services.UserService;
 import io.github.nishadchayanakhawa.testestimatehub.services.TestTypeService;
 import io.github.nishadchayanakhawa.testestimatehub.services.ChangeTypeConfigurationService;
 import io.github.nishadchayanakhawa.testestimatehub.services.GeneralConfigurationService;
-import io.github.nishadchayanakhawa.testestimatehub.services.ApplicationConfigurationService;
-import io.github.nishadchayanakhawa.testestimatehub.services.ReleaseService;
-import io.github.nishadchayanakhawa.testestimatehub.services.ChangeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import io.github.nishadchayanakhawa.testestimatehub.model.Role;
 import io.github.nishadchayanakhawa.testestimatehub.model.User;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.TestTypeDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.ChangeTypeConfigurationDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.GeneralConfigurationDTO;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.ApplicationConfigurationDTO;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.ChangeDTO;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.ReleaseDTO;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.RequirementDTO;
-
 import java.security.SecureRandom;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
 import java.util.Base64.Encoder;
 import java.util.NoSuchElementException;
 
@@ -48,15 +36,6 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 	
 	@Autowired
 	private GeneralConfigurationService generalConfigurationService;
-	
-	@Autowired
-	private ApplicationConfigurationService applicationConfigurationService;
-	
-	@Autowired
-	private ChangeService changeService;
-	
-	@Autowired
-	private ReleaseService releaseService;
 	
 	@Autowired
 	private TestTypeService testTypeService;
@@ -150,29 +129,6 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 			GeneralConfigurationDTO loadedGeneralConfiguration=generalConfigurationService.save(generalConfigurationDTO);
 			CommandLineAppStartupRunner.logger.warn("General Configuration record created: {}",loadedGeneralConfiguration);
 		}
-		
-		//loadTestData();
-	}
-	
-	private void loadTestData() {
-		applicationConfigurationService.add(new ApplicationConfigurationDTO(0L,"CTF","Watani I","Loan Origination",2,"LOW",null));
-		applicationConfigurationService.add(new ApplicationConfigurationDTO(0L,"CTF","Watani I","Loan Stipulation",3,"MEDIUM",null));
-		applicationConfigurationService.add(new ApplicationConfigurationDTO(0L,"CTF","Watani I","Loan Disbursement",4,"HIGH",null));
-		applicationConfigurationService.add(new ApplicationConfigurationDTO(0L,"CTF","Watani ATR","Dashboard",5,"LOW",null));
-		applicationConfigurationService.add(new ApplicationConfigurationDTO(0L,"CTF","Watani ATR","T24 Managed",6,"MEDIUM",null));
-		applicationConfigurationService.add(new ApplicationConfigurationDTO(0L,"CTF","Watani ATR","Repayment",7,"HIGH",null));
-		ReleaseDTO release=releaseService.addOrUpdate(new ReleaseDTO(0L,"July 2023","July 2023 Major Release",null));
-		
-		List<RequirementDTO> requirements=new ArrayList<>();
-		RequirementDTO requirement1=new RequirementDTO
-				(0,"BN01","Define first requirment","LOW",null,null);
-		RequirementDTO requirement2=new RequirementDTO
-				(0,"BN02","Define second requirment","HIGH",null,null);
-		requirements.add(requirement1);
-		requirements.add(requirement2);
-		ChangeDTO changeDTO=new ChangeDTO
-				(0,"Project-01","First Project","CREATED",null,release.getId(),null,null,requirements,LocalDate.now(),LocalDate.now().plusDays(5),1L,null);
-		changeService.addOrUpdate(changeDTO);
 	}
 
 	private static String generateRandomPassword(int length) {
